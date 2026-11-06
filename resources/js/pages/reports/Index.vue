@@ -293,8 +293,7 @@ export default defineComponent({
             };
             options.plugins = {
                 ...options.plugins,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ...({ goalLine: { value: this.byWeek ? 0 : this.report.goal_minutes } } as any),
+                goalLine: { value: this.byWeek ? 0 : this.report.goal_minutes },
             };
 
             return options;

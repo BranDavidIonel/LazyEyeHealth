@@ -89,7 +89,7 @@
 
     <!-- History -->
     <AppCard class="mt-10" :title="$t('All tests')" flush>
-        <div v-if="tests.length" class="overflow-x-auto">
+        <div v-if="tests.length" class="relative overflow-x-auto">
             <table class="table-base">
                 <thead>
                     <tr>

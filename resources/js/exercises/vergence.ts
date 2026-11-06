@@ -1119,6 +1119,7 @@ export default function start(rt: Runtime): void {
         const needsAck = String(Amb.results('worth').pop()?.seen) === '5';
         const hasMeasure = !!lastMeasure();
         const modal = Amb.overlay(introHtml(), [
+            { label: t('Main menu'), onClick: () => Amb.go(Amb.urls.home) },
             {
                 label: t('Measurement'),
                 id: 'vgGoMeasure',
@@ -1159,6 +1160,7 @@ export default function start(rt: Runtime): void {
                                 o.setAttribute('aria-pressed', String(o === b)),
                             );
                         setupCanvas();
+                        instructions();
                         draw();
                     };
                 });

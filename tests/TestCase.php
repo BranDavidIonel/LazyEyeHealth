@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Models\User;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -38,5 +39,7 @@ abstract class TestCase extends BaseTestCase
     {
         $this->app['env'] = 'local';
         config(['eye.auth_enabled' => false]);
+        // Outside the "testing" environment Laravel checks the CSRF token again.
+        $this->withoutMiddleware(PreventRequestForgery::class);
     }
 }

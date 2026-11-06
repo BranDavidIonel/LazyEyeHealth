@@ -128,7 +128,8 @@ class PracticeAndResultsTest extends TestCase
             ->assertJsonPath('result.d', '2026-11-06')
             ->assertJsonPath('result.px', 1.5)
             ->assertJsonPath('result.mode', 'anaglyph');
-        $this->assertIsInt($response->json('result.t'));
+        // milliseconds, like Date.now() in the browser
+        $this->assertEquals(CarbonImmutable::parse('2026-11-06 12:00:00')->getTimestampMs(), $response->json('result.t'));
 
         $result = ExerciseResult::query()->firstOrFail();
         $this->assertSame($user->id, $result->user_id);
@@ -230,7 +231,7 @@ class PracticeAndResultsTest extends TestCase
         foreach ($results['tetris'] as $row) {
             $this->assertSame('tetris', $row['g']);
             $this->assertSame('2026-11-06', $row['d']);
-            $this->assertIsInt($row['t']);
+            $this->assertIsNumeric($row['t']);
             $this->assertIsInt($row['id']);
         }
 

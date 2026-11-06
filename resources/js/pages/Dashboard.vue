@@ -274,8 +274,7 @@ export default defineComponent({
             options.plugins = {
                 ...options.plugins,
                 legend: { display: false },
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ...({ goalLine: { value: this.today.goal_minutes } } as any),
+                goalLine: { value: this.today.goal_minutes },
             };
 
             return options;

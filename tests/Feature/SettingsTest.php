@@ -33,7 +33,7 @@ class SettingsTest extends TestCase
             'sound' => '0',
             'autoBalance' => 1,
             'calibrated' => true,
-            'pxPerMm' => 4,
+            'pxPerMm' => '4.25',
             'theme' => 'dark',
         ]);
 
@@ -47,7 +47,7 @@ class SettingsTest extends TestCase
             'sound' => false,
             'autoBalance' => true,
             'calibrated' => true,
-            'pxPerMm' => 4.0,
+            'pxPerMm' => 4.25,
             'theme' => 'dark',
         ]], $settings);
 
@@ -55,7 +55,7 @@ class SettingsTest extends TestCase
         $this->assertSame(0.45, $stored['fellowContrast']);
         $this->assertSame(200, $stored['redLevel']);
         $this->assertFalse($stored['sound']);
-        $this->assertSame(4.0, (float) $stored['pxPerMm']);
+        $this->assertSame(4.25, $stored['pxPerMm']);
         $this->assertSame('right', $stored['redSide']);
     }
 
@@ -115,11 +115,12 @@ class SettingsTest extends TestCase
 
         $this->putJson('/api/settings', ['fellowContrast' => 1, 'theme' => 'blue', 'breakEveryMin' => 0])
             ->assertOk()
+            // JSON has no 1.0: a whole float comes back as 1
             ->assertJsonPath('settings.fellowContrast', 1)
             ->assertJsonPath('settings.theme', 'blue')
             ->assertJsonPath('settings.breakEveryMin', 0);
 
-        $this->assertSame(1.0, UserSetting::query()->firstOrFail()->data['fellowContrast']);
+        $this->assertEquals(1.0, UserSetting::query()->firstOrFail()->data['fellowContrast']);
     }
 
     public function test_the_settings_page_saves_with_a_redirect(): void
@@ -134,7 +135,8 @@ class SettingsTest extends TestCase
         $this->get('/setari')->assertInertia(fn (Assert $page) => $page
             ->where('settings.lazyEye', 'left')
             ->where('settings.viewMode', 'patch')
-            ->where('flash.success', null));
+            // the message is shown once, on the page after the redirect
+            ->where('flash.success', 'Setările au fost salvate.'));
     }
 
     public function test_saved_settings_are_shared_with_every_page(): void

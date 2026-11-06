@@ -120,6 +120,14 @@ export const goalLine: Plugin = {
 
 Chart.register(goalLine);
 
+declare module 'chart.js' {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface PluginOptionsByType<TType extends ChartType> {
+        /** Dashed line at the daily goal (minutes); 0 hides it. */
+        goalLine?: { value?: number };
+    }
+}
+
 /** Base options: recessive grid, tooltips, legend at the bottom, theme colours. */
 export function baseOptions<T extends ChartType>(
     format: (value: number) => string = (v) => v.toLocaleString(intlLocale()),
