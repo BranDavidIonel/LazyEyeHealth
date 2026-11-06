@@ -36,7 +36,7 @@ APP_TIMEZONE=Europe/Bucharest
 DB_CONNECTION=sqlite
 
 AUTH_ENABLED=false               # no login page locally: you are the admin below
-ADMIN_EMAIL=admin@yahoo.com
+ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD="..."             # quotes because of special characters like %
 ```
 
@@ -60,7 +60,7 @@ ADMIN_PASSWORD="..."             # quotes because of special characters like %
    DB_PASSWORD=...
    AUTH_ENABLED=true             # with APP_ENV=production the login is on anyway
    REGISTRATION_ENABLED=false    # true only if other people may create accounts
-   ADMIN_EMAIL=admin@yahoo.com
+   ADMIN_EMAIL=admin@example.com
    ADMIN_PASSWORD="a strong password"
    SESSION_SECURE_COOKIE=true
    ```
