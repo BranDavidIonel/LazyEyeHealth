@@ -1,0 +1,98 @@
+@import 'tailwindcss';
+@import './amb.css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme inline {
+    --font-sans:
+        Instrument Sans, ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
+}
+
+/*
+ * Dark on purpose: a black background keeps red-cyan glasses from leaking
+ * one eye's image into the other, and is easier on tired eyes.
+ */
+@theme {
+    --color-ink: #07090c;
+    --color-panel: #11151a;
+    --color-panel-2: #181d24;
+    --color-line: #262d36;
+    --color-line-2: #364050;
+    --color-fg: #e9eef3;
+    --color-muted: #9aa5b1;
+    --color-accent: #4fc3f7;
+    --color-accent-strong: #29b6f6;
+    --color-accent-ink: #00141d;
+    --color-good: #63d297;
+    --color-bad: #ff6b6b;
+    --color-warn: #ffc857;
+    --color-lens-red: #ff4d4d;
+    --color-lens-cyan: #29e0ff;
+}
+
+@layer base {
+    html {
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-ink text-fg;
+    }
+
+    a {
+        @apply text-accent;
+    }
+}
+
+/* Shared building blocks used by the Vue components. */
+@layer components {
+    .panel {
+        @apply rounded-xl border border-line bg-panel;
+    }
+
+    .form-label {
+        @apply mb-1.5 block text-sm font-medium text-muted;
+    }
+
+    .form-control {
+        @apply block w-full rounded-lg border border-line-2 bg-panel-2 px-3 py-2 text-sm text-fg outline-none placeholder:text-muted/60 focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:cursor-not-allowed disabled:opacity-60;
+    }
+
+    .form-error {
+        @apply mt-1.5 text-xs font-medium text-bad;
+    }
+
+    .table-base {
+        @apply w-full text-left text-sm;
+    }
+
+    .table-base thead th {
+        @apply border-b border-line px-4 py-3 text-xs font-semibold tracking-wide text-muted uppercase;
+    }
+
+    .table-base tbody td {
+        @apply border-b border-line/60 px-4 py-3 align-middle;
+    }
+
+    .tag-di {
+        background: linear-gradient(90deg, rgb(255 60 60 / 0.3), rgb(0 220 255 / 0.3));
+        @apply rounded-full px-2.5 py-0.5 text-xs font-bold whitespace-nowrap text-white;
+    }
+
+    .tag-mono {
+        @apply rounded-full bg-warn/15 px-2.5 py-0.5 text-xs font-bold whitespace-nowrap text-warn;
+    }
+
+    .tag-stereo {
+        @apply rounded-full bg-good/15 px-2.5 py-0.5 text-xs font-bold whitespace-nowrap text-good;
+    }
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}

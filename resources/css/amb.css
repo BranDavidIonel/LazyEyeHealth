@@ -1,0 +1,497 @@
+/*
+ * Styles of the exercise pages (ported from the first version, Exercitii-ambliopie).
+ * Everything is scoped under ".amb": the exercise shell has it, and so do the
+ * pop-up windows (.amb.amb-overlay) the exercises add to <body>.
+ */
+.amb {
+    --bg: #07090c;
+    --panel: #11151a;
+    --panel-2: #181d24;
+    --line: #262d36;
+    --line-2: #364050;
+    --text: #e9eef3;
+    --muted: #9aa5b1;
+    --accent: #4fc3f7;
+    --accent-ink: #00141d;
+    --good: #63d297;
+    --bad: #ff6b6b;
+    --warn: #ffc857;
+    --radius: 14px;
+    --shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
+
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.55;
+
+    & * {
+        box-sizing: border-box;
+    }
+
+    & a {
+        color: var(--accent);
+    }
+
+    & h1,
+    & h2,
+    & h3 {
+        line-height: 1.2;
+        margin: 0 0 0.5em;
+        font-weight: 650;
+    }
+
+    & p {
+        margin: 0 0 0.8em;
+    }
+
+    & b,
+    & strong {
+        font-weight: 650;
+    }
+
+    & .muted,
+    & .hint {
+        color: var(--muted);
+    }
+
+    & .hint {
+        font-size: 0.9rem;
+    }
+
+    /* Buttons and pills */
+    & .btn {
+        appearance: none;
+        border: 1px solid var(--line-2);
+        background: var(--panel-2);
+        color: var(--text);
+        padding: 10px 16px;
+        border-radius: 10px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition:
+            background 0.15s,
+            border-color 0.15s,
+            filter 0.15s;
+    }
+
+    & .btn:hover {
+        background: #20262f;
+        border-color: #475264;
+    }
+
+    & .btn.primary {
+        background: var(--accent);
+        color: var(--accent-ink);
+        border-color: transparent;
+    }
+
+    & .btn.primary:hover {
+        filter: brightness(1.08);
+    }
+
+    & .btn.ghost {
+        background: transparent;
+    }
+
+    & .btn.big {
+        padding: 14px 24px;
+        font-size: 1.05rem;
+    }
+
+    & .btn.small {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+
+    & .btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        filter: none;
+    }
+
+    & .btn:focus-visible,
+    & select:focus-visible,
+    & input:focus-visible,
+    & .seg button:focus-visible,
+    & summary:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    & .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 11px;
+        border-radius: 999px;
+        background: var(--panel-2);
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.85rem;
+    }
+
+    /* Cards, forms */
+    & .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px;
+    }
+
+    & .card h2 {
+        font-size: 1.15rem;
+    }
+
+    & .card h3 {
+        font-size: 1rem;
+    }
+
+    & .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 14px;
+    }
+
+    & .field > .label {
+        font-size: 0.85rem;
+        color: var(--muted);
+        font-weight: 600;
+    }
+
+    & .row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    & select,
+    & input[type='number'],
+    & input[type='text'] {
+        background: var(--panel-2);
+        color: var(--text);
+        border: 1px solid var(--line-2);
+        border-radius: 8px;
+        padding: 8px 10px;
+        font: inherit;
+    }
+
+    & input[type='range'] {
+        width: 100%;
+        accent-color: var(--accent);
+    }
+
+    & input[type='checkbox'] {
+        accent-color: var(--accent);
+        width: 18px;
+        height: 18px;
+        margin: 0;
+    }
+
+    & .check {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    & .seg {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 3px;
+        padding: 3px;
+        border-radius: 10px;
+        background: var(--panel-2);
+        border: 1px solid var(--line);
+    }
+
+    & .seg button {
+        border: 0;
+        background: transparent;
+        color: var(--muted);
+        padding: 7px 12px;
+        border-radius: 8px;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    & .seg button:hover {
+        color: var(--text);
+    }
+
+    & .seg button[aria-pressed='true'] {
+        background: var(--accent);
+        color: var(--accent-ink);
+    }
+
+    & .notice {
+        border: 1px solid #5a4a22;
+        background: #1d1809;
+        color: #f4e3b5;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 0.95rem;
+    }
+
+    & .instr {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--accent);
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+    }
+
+    & .instr p {
+        margin: 0;
+    }
+
+    & .instr p + p {
+        margin-top: 6px;
+    }
+
+    & .tag {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        padding: 3px 9px;
+        border-radius: 999px;
+        white-space: nowrap;
+    }
+
+    & .tag.di {
+        background: linear-gradient(90deg, rgba(255, 60, 60, 0.3), rgba(0, 220, 255, 0.3));
+        color: #fff;
+    }
+
+    & .tag.mono {
+        background: rgba(255, 200, 87, 0.14);
+        color: var(--warn);
+    }
+
+    & kbd {
+        display: inline-block;
+        min-width: 1.6em;
+        padding: 1px 6px;
+        border-radius: 6px;
+        text-align: center;
+        background: var(--panel-2);
+        border: 1px solid var(--line-2);
+        border-bottom-width: 2px;
+        font: 600 0.8rem/1.5 'Segoe UI', system-ui, sans-serif;
+        color: var(--text);
+    }
+
+    /* Results inside the pop-up windows */
+    & .amb-big {
+        font-size: 3.2rem;
+        font-weight: 800;
+        text-align: center;
+        font-variant-numeric: tabular-nums;
+        margin: 6px 0;
+    }
+
+    & .result-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+        margin: 12px 0;
+    }
+
+    & .result-grid div {
+        background: var(--panel-2);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 12px;
+    }
+
+    & .result-grid span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.8rem;
+    }
+
+    & .result-grid b {
+        font-size: 1.3rem;
+        font-variant-numeric: tabular-nums;
+    }
+
+    & .good {
+        color: var(--good);
+    }
+
+    & .bad {
+        color: var(--bad);
+    }
+
+    /* Exercise layout: canvas on the left, side panel on the right */
+    & .game-wrap {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 16px;
+        flex-wrap: wrap;
+    }
+
+    & .stage {
+        background: #000;
+        border-radius: 10px;
+        position: relative;
+        line-height: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+    }
+
+    & .stage canvas {
+        display: block;
+        touch-action: none;
+    }
+
+    & .side {
+        width: 260px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    & .side .btn.wide {
+        width: 100%;
+    }
+
+    & .stat {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 10px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px 12px;
+    }
+
+    & .stat span {
+        color: var(--muted);
+        font-size: 0.9rem;
+    }
+
+    & .stat b {
+        font-size: 1.25rem;
+        font-variant-numeric: tabular-nums;
+    }
+
+    & .progress {
+        height: 8px;
+        background: var(--panel-2);
+        border-radius: 99px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+    }
+
+    & .progress > i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: var(--accent);
+        transition: width 0.2s;
+    }
+
+    & .resp-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    & .resp {
+        width: 76px;
+        height: 76px;
+        font-size: 1.9rem;
+        padding: 0;
+    }
+
+    & .pad {
+        display: grid;
+        grid-template-columns: repeat(3, 64px);
+        grid-template-rows: repeat(2, 64px);
+        gap: 8px;
+        justify-content: center;
+    }
+
+    & .pad .resp {
+        width: 64px;
+        height: 64px;
+        font-size: 1.6rem;
+    }
+
+    & .feedback {
+        min-height: 1.6em;
+        text-align: center;
+        font-weight: 700;
+    }
+
+    & .q {
+        text-align: center;
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    & .touch-only {
+        display: none;
+    }
+
+    @media (pointer: coarse) {
+        & .touch-only {
+            display: flex;
+        }
+    }
+
+    @media (max-width: 720px) {
+        & .side {
+            width: 100%;
+        }
+    }
+}
+
+/* Pop-up window (Amb.overlay) */
+.amb.amb-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.74);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.amb .amb-modal {
+    background: var(--panel);
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius);
+    padding: 24px;
+    width: 100%;
+    max-width: 540px;
+    box-shadow: var(--shadow);
+    max-height: calc(100vh - 32px);
+    overflow: auto;
+}
+
+.amb .amb-modal h2 {
+    font-size: 1.35rem;
+}
+
+.amb .amb-modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
