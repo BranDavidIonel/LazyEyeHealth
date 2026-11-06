@@ -11,9 +11,9 @@ export default {
     'Colours of the pages. The exercise area stays black in every theme: the red-cyan glasses separate the two pictures properly only on black.':
         'Culorile paginilor. Zona exercițiilor rămâne neagră în orice temă: ochelarii roșu-cyan separă bine cele două imagini doar pe negru.',
     Theme: 'Temă',
-    Light: 'Luminos',
+    Light: 'Luminoasă',
     'Light blue': 'Albastru deschis',
-    Dark: 'Întunecat',
+    Dark: 'Întunecată',
     'White pages, easy to read in daylight.':
         'Pagini albe, ușor de citit la lumina zilei.',
     'A soft light blue background, calmer on the eyes.':

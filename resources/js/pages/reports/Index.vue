@@ -29,7 +29,7 @@
     </div>
 
     <!-- Numbers -->
-    <div class="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
+    <div class="grid grid-cols-2 gap-3 md:grid-cols-3 2xl:grid-cols-6">
         <StatCard :label="$t('Total time')" :value="formatDuration(kpis.total_seconds)" :icon="icons.Clock" />
         <StatCard :label="$t('Days with practice')" :value="`${kpis.active_days} / ${kpis.days}`" :icon="icons.CalendarCheck" />
         <StatCard :label="$t('Days with the goal reached')" :value="String(kpis.goal_days)" :hint="$t('goal: :min min / day', { min: report.goal_minutes })" :icon="icons.Target" />
