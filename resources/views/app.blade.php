@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"  @class(['dark' => ($appearance ?? 'system') == 'dark'])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="{{ $page['props']['settings']['theme'] ?? 'light' }}">
     <head>
         <meta charset="utf-8">
+        {{-- Before login there are no settings: use the theme kept in the browser. --}}
+        @if (! isset($page['props']['settings']['theme']))
+            <script>try { var t = localStorage.getItem('lazyeye.theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+        @endif
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" href="/favicon.ico" sizes="any">

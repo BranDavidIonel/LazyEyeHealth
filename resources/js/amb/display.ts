@@ -1,14 +1,33 @@
 // Colours per eye (red-cyan glasses) and screen geometry (pixels <-> degrees).
+import { getLocale, t } from '@/i18n';
 import { settings } from './settings';
 import type { Side } from './settings';
 
 export type RGB = [number, number, number];
 
-export const EYE: Record<Side, string> = { left: 'stâng', right: 'drept' };
+const ro = (): boolean => getLocale() === 'ro';
+
+/** Name of an eye in the current language: Amb.EYE.right → "drept" / "right". */
+export const EYE: Record<Side, string> = {
+    get left() {
+        return ro() ? 'stâng' : 'left';
+    },
+    get right() {
+        return ro() ? 'drept' : 'right';
+    },
+};
+
+/** Colour of the second lens in the current language. */
 export const LENS: Record<'cyan' | 'blue' | 'green', string> = {
-    cyan: 'cyan',
-    blue: 'albastru',
-    green: 'verde',
+    get cyan() {
+        return 'cyan';
+    },
+    get blue() {
+        return ro() ? 'albastru' : 'blue';
+    },
+    get green() {
+        return ro() ? 'verde' : 'green';
+    },
 };
 
 export function other(eye: Side): Side {
@@ -202,8 +221,8 @@ export function modeText(): string {
     const lazy = EYE[s.lazyEye];
 
     return isAnaglyph()
-        ? `Ochi leneș: ${lazy} · ochelari roșu-${LENS[s.otherLens]}`
-        : `Ochi leneș: ${lazy} · ocluzor pe ochiul ${EYE[goodEye()]}`;
+        ? t('Lazy eye: :eye · red-:lens glasses', { eye: lazy, lens: LENS[s.otherLens] })
+        : t('Lazy eye: :eye · patch on the :good eye', { eye: lazy, good: EYE[goodEye()] });
 }
 
 /** How to set up the eyes before an exercise. kind: 'dichoptic' | 'mono'. Returns HTML. */
@@ -213,22 +232,23 @@ export function setupText(kind: 'dichoptic' | 'mono'): string {
     const good = EYE[goodEye()];
 
     if (isAnaglyph()) {
-        const glasses =
-            `Pune ochelarii: lentila <b>roșie</b> pe ochiul <b>${EYE[s.redSide]}</b>, ` +
-            `lentila <b>${LENS[s.otherLens]}</b> pe ochiul <b>${EYE[other(s.redSide)]}</b>. Ține ambii ochi deschiși.`;
+        const glasses = t(
+            'Put on the glasses: the <b>red</b> lens on the <b>:red</b> eye, the <b>:lens</b> lens on the <b>:other</b> eye. Keep both eyes open.',
+            { red: EYE[s.redSide], lens: LENS[s.otherLens], other: EYE[other(s.redSide)] },
+        );
 
         if (kind === 'dichoptic') {
-            return (
-                `${glasses} Ochiul leneș (${lazy}) vede piesele care se mișcă, ochiul bun (${good}) ` +
-                'vede restul, mai estompat. Ai nevoie de amândoi ca să joci.'
-            );
+            return `${glasses} ${t(
+                'The lazy eye (:lazy) sees the moving pieces, the good eye (:good) sees the rest, fainter. You need both to play.',
+                { lazy, good },
+            )}`;
         }
 
-        return `${glasses} Imaginea o vede doar ochiul leneș (${lazy}).`;
+        return `${glasses} ${t('Only the lazy eye (:lazy) sees the picture.', { lazy })}`;
     }
 
-    return (
-        `Acoperă ochiul <b>${good}</b> (cel bun) cu un ocluzor sau cu palma, fără să apeși pe ochi. ` +
-        `Lucrezi doar cu ochiul leneș (${lazy}).`
+    return t(
+        'Cover the <b>:good</b> eye (the good one) with a patch or your palm, without pressing on the eye. You work with the lazy eye (:lazy) only.',
+        { good, lazy },
     );
 }

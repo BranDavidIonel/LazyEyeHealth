@@ -14,9 +14,9 @@ enum VisionTestType: string
     public function label(): string
     {
         return match ($this) {
-            self::Acuity => 'Tabel cu litere',
-            self::Reading => 'Test de citire',
-            self::Contrast => 'Test de contrast',
+            self::Acuity => __('Letter chart'),
+            self::Reading => __('Reading test'),
+            self::Contrast => __('Contrast test'),
         };
     }
 

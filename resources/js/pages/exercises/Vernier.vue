@@ -6,28 +6,41 @@
                 <div id="instr" class="instr"></div>
                 <p id="calHint" class="hint" hidden></p>
                 <button id="startBtn" class="btn primary big wide">
-                    Start
+                    {{ $t('Start') }}
                 </button>
                 <div class="progress"><i id="prog"></i></div>
                 <div class="stat">
-                    <span>Încercare</span><b id="sTrial">0 / 60</b>
+                    <span>{{ $t('Trial') }}</span><b id="sTrial">0 / 60</b>
                 </div>
-                <div class="stat"><span>Corecte</span><b id="sAcc">–</b></div>
-                <div class="stat"><span>Puncte</span><b id="sPts">0</b></div>
                 <div class="stat">
-                    <span>Decalaj acum</span><b id="sNow">–</b>
+                    <span>{{ $t('Correct answers') }}</span><b id="sAcc">–</b>
+                </div>
+                <div class="stat">
+                    <span>{{ $t('Points') }}</span><b id="sPts">0</b>
+                </div>
+                <div class="stat">
+                    <span>{{ $t('Offset now') }}</span><b id="sNow">–</b>
                 </div>
                 <p class="q">
-                    Linia de jos e mutată la stânga sau la dreapta?<br /><kbd
-                        >←</kbd
-                    >
-                    stânga &nbsp; <kbd>→</kbd> dreapta
+                    {{ $t('Is the lower line shifted to the left or to the right?')
+                    }}<br />
+                    <span
+                        v-html="$t('<kbd>←</kbd> left &nbsp; <kbd>→</kbd> right')"
+                    ></span>
                 </p>
                 <div class="resp-row">
-                    <button id="bL" class="btn resp" aria-label="La stânga">
+                    <button
+                        id="bL"
+                        class="btn resp"
+                        :aria-label="$t('To the left')"
+                    >
                         ←
                     </button>
-                    <button id="bR" class="btn resp" aria-label="La dreapta">
+                    <button
+                        id="bR"
+                        class="btn resp"
+                        :aria-label="$t('To the right')"
+                    >
                         →
                     </button>
                 </div>

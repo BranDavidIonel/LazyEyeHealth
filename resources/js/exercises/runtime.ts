@@ -57,7 +57,7 @@ export function mountExercise(
             const el = root.querySelector<T>(`#${CSS.escape(id)}`);
 
             if (!el) {
-                throw new Error(`Elementul #${id} lipsește din pagina exercițiului.`);
+                throw new Error(`Element #${id} is missing from the exercise page.`);
             }
 
             return el;

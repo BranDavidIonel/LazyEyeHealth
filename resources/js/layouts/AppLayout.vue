@@ -1,15 +1,15 @@
 <template>
     <div class="min-h-screen bg-ink text-fg">
         <header
-            class="sticky top-0 z-30 border-b border-line bg-[#0b0e12]/95 backdrop-blur print:hidden"
+            class="sticky top-0 z-30 border-b border-line bg-header/95 backdrop-blur print:hidden"
         >
             <div
                 class="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 sm:px-6"
             >
                 <button
                     type="button"
-                    class="-ml-1 rounded-md p-2 text-muted hover:bg-panel-2 hover:text-fg lg:hidden"
-                    aria-label="Meniu"
+                    class="-ml-1 rounded-md p-2 text-muted hover:bg-hover hover:text-fg xl:hidden"
+                    :aria-label="$t('Menu')"
                     :aria-expanded="menuOpen"
                     @click="menuOpen = !menuOpen"
                 >
@@ -26,35 +26,37 @@
                     </span>
                 </Link>
 
-                <nav class="ml-4 hidden items-center gap-0.5 lg:flex">
+                <nav class="ml-4 hidden items-center gap-0.5 xl:flex">
                     <Link
                         v-for="item in items"
                         :key="item.href"
                         :href="item.href"
-                        class="flex items-center gap-1.5 rounded-md px-3 py-2 text-sm font-medium no-underline transition"
+                        class="flex items-center gap-1.5 rounded-md px-2.5 py-2 text-sm font-medium whitespace-nowrap no-underline transition"
                         :class="itemClass(item)"
                     >
                         <component :is="item.icon" class="size-4" />
-                        {{ item.label }}
+                        {{ $t(item.label) }}
                     </Link>
                 </nav>
 
-                <div class="ml-auto flex items-center gap-1.5">
+                <div class="ml-auto flex items-center gap-1">
                     <span
-                        class="hidden rounded-full border border-line bg-panel-2 px-3 py-1 text-xs text-muted sm:inline"
-                        title="Timp de exercițiu azi / obiectivul zilnic"
+                        class="hidden rounded-full border border-line bg-panel-2 px-3 py-1 text-xs text-muted 2xl:inline"
+                        :title="$t(`Today's practice time / daily goal`)"
                     >
-                        Azi: {{ todayMinutes }} / {{ goal }} min
+                        {{ $t('Today: :min / :goal min', { min: todayMinutes, goal }) }}
                     </span>
+                    <ThemeSwitcher />
+                    <LanguageSwitcher />
                     <Link
                         href="/setari"
                         class="rounded-md p-2 transition"
                         :class="
                             settingsActive
                                 ? 'bg-accent/15 text-accent'
-                                : 'text-muted hover:bg-panel-2 hover:text-fg'
+                                : 'text-muted hover:bg-hover hover:text-fg'
                         "
-                        title="Setări"
+                        :title="$t('Settings')"
                     >
                         <Settings class="size-5" />
                     </Link>
@@ -63,8 +65,8 @@
                         href="/logout"
                         method="post"
                         as="button"
-                        class="rounded-md p-2 text-muted transition hover:bg-panel-2 hover:text-fg"
-                        :title="`Ieșire (${$page.props.auth.user?.email ?? ''})`"
+                        class="rounded-md p-2 text-muted transition hover:bg-hover hover:text-fg"
+                        :title="$t('Log out (:email)', { email: $page.props.auth.user?.email ?? '' })"
                     >
                         <LogOut class="size-5" />
                     </Link>
@@ -73,7 +75,7 @@
 
             <nav
                 v-if="menuOpen"
-                class="border-t border-line px-4 py-2 lg:hidden"
+                class="border-t border-line px-4 py-2 xl:hidden"
             >
                 <Link
                     v-for="item in items"
@@ -83,7 +85,7 @@
                     :class="itemClass(item)"
                 >
                     <component :is="item.icon" class="size-4" />
-                    {{ item.label }}
+                    {{ $t(item.label) }}
                 </Link>
             </nav>
         </header>
@@ -103,6 +105,10 @@ import { defineComponent } from 'vue';
 import Amb from '@/amb';
 import AppLogo from '@/components/general/AppLogo.vue';
 import FlashToasts from '@/components/general/FlashToasts.vue';
+import LanguageSwitcher from '@/components/layout/LanguageSwitcher.vue';
+import ThemeSwitcher from '@/components/layout/ThemeSwitcher.vue';
+import { setLocale } from '@/i18n';
+import { applyTheme } from '@/utils/theme';
 import { isActive, navigationItems } from '@/utils/navigation';
 import type { NavItem } from '@/utils/navigation';
 
@@ -110,7 +116,16 @@ import type { NavItem } from '@/utils/navigation';
 export default defineComponent({
     name: 'AppLayout',
 
-    components: { AppLogo, FlashToasts, Link, LogOut, Menu, Settings },
+    components: {
+        AppLogo,
+        FlashToasts,
+        LanguageSwitcher,
+        Link,
+        LogOut,
+        Menu,
+        Settings,
+        ThemeSwitcher,
+    },
 
     data() {
         return {
@@ -141,11 +156,19 @@ export default defineComponent({
             this.menuOpen = false;
         },
 
+        '$page.props.locale': {
+            immediate: true,
+            handler(locale: string) {
+                setLocale(locale);
+            },
+        },
+
         // Settings and today's time come from the server with every page.
         '$page.props.settings': {
             immediate: true,
             handler() {
                 Amb.initSettings(this.$page.props.settings);
+                applyTheme(Amb.settings().theme);
             },
         },
 
@@ -161,7 +184,7 @@ export default defineComponent({
         itemClass(item: NavItem): string {
             return isActive(item, this.$page.url)
                 ? 'bg-accent/15 text-accent'
-                : 'text-muted hover:bg-panel-2 hover:text-fg';
+                : 'text-muted hover:bg-hover hover:text-fg';
         },
     },
 });

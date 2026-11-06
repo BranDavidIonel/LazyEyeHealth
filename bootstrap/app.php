@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AutoLoginLocally;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,7 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // The language cookie is plain text (not encrypted), so SetLocale can read it.
+        $middleware->encryptCookies(except: [SetLocale::COOKIE]);
+
         $middleware->web(append: [
+            SetLocale::class,
             // Locally with AUTH_ENABLED=false: signs you in as the admin (no login page).
             AutoLoginLocally::class,
             HandleInertiaRequests::class,

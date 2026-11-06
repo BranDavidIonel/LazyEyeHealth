@@ -12,13 +12,72 @@
 }
 
 /*
- * Dark on purpose: a black background keeps red-cyan glasses from leaking
- * one eye's image into the other, and is easier on tired eyes.
+ * Colour themes (Settings → Appearance, or the palette button top right).
+ * The default below is "light"; [data-theme] on <html> switches to "blue" or
+ * "dark". Components use only these colours (bg-panel, text-muted, ...), so
+ * they follow the theme. The exercise canvas stays black in every theme.
  */
 @theme {
+    --color-ink: #f4f6fa;
+    --color-header: #ffffff;
+    --color-panel: #ffffff;
+    --color-panel-2: #f0f3f8;
+    --color-hover: #e6ebf2;
+    --color-line: #e1e6ee;
+    --color-line-2: #c6cfdb;
+    --color-fg: #111a2b;
+    --color-muted: #5b6676;
+    --color-accent: #1f6fd1;
+    --color-accent-strong: #1a5fb4;
+    --color-accent-ink: #ffffff;
+    --color-good: #13804a;
+    --color-bad: #c9302c;
+    --color-warn: #a35f00;
+    --color-lens-red: #e03131;
+    --color-lens-cyan: #0b9fb8;
+}
+
+:root {
+    color-scheme: light;
+    /* Chart colours (validated for colour-blind readers on white). */
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+    --series-4: #eda100;
+    --series-5: #e87ba4;
+    --series-6: #008300;
+    --chart-grid: #e8ecf2;
+    --heat-0: #e9edf3;
+    --heat-1: #b7d3f6;
+    --heat-2: #6da7ec;
+    --heat-3: #2a78d6;
+    --heat-4: #184f95;
+}
+
+:root[data-theme='blue'] {
+    --color-ink: #dfeaf7;
+    --color-header: #f5f9fe;
+    --color-panel: #ffffff;
+    --color-panel-2: #edf4fc;
+    --color-hover: #e1ecf9;
+    --color-line: #cbdcf0;
+    --color-line-2: #a9c3e3;
+    --color-fg: #0b2545;
+    --color-muted: #4a6385;
+    --color-accent: #0d5bd7;
+    --color-accent-strong: #0a4cb4;
+    --color-accent-ink: #ffffff;
+    --chart-grid: #e3edf8;
+    --heat-0: #e3ecf7;
+}
+
+:root[data-theme='dark'] {
+    color-scheme: dark;
     --color-ink: #07090c;
+    --color-header: #0b0e12;
     --color-panel: #11151a;
     --color-panel-2: #181d24;
+    --color-hover: #20262f;
     --color-line: #262d36;
     --color-line-2: #364050;
     --color-fg: #e9eef3;
@@ -31,13 +90,22 @@
     --color-warn: #ffc857;
     --color-lens-red: #ff4d4d;
     --color-lens-cyan: #29e0ff;
+    /* Chart colours stepped for the dark panel (validated on #11151a). */
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+    --chart-grid: #1c2229;
+    --heat-0: #1a2028;
+    --heat-1: #184f95;
+    --heat-2: #256abf;
+    --heat-3: #3987e5;
+    --heat-4: #86b6ef;
 }
 
 @layer base {
-    html {
-        color-scheme: dark;
-    }
-
     body {
         @apply bg-ink text-fg;
     }
@@ -50,7 +118,7 @@
 /* Shared building blocks used by the Vue components. */
 @layer components {
     .panel {
-        @apply rounded-xl border border-line bg-panel;
+        @apply rounded-xl border border-line bg-panel shadow-[0_1px_2px_rgb(15_23_42/0.04)];
     }
 
     .form-label {
@@ -58,7 +126,7 @@
     }
 
     .form-control {
-        @apply block w-full rounded-lg border border-line-2 bg-panel-2 px-3 py-2 text-sm text-fg outline-none placeholder:text-muted/60 focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:cursor-not-allowed disabled:opacity-60;
+        @apply block w-full rounded-lg border border-line-2 bg-panel px-3 py-2 text-sm text-fg outline-none placeholder:text-muted/60 focus:border-accent focus:ring-2 focus:ring-accent/25 disabled:cursor-not-allowed disabled:opacity-60;
     }
 
     .form-error {
@@ -78,7 +146,7 @@
     }
 
     .tag-di {
-        background: linear-gradient(90deg, rgb(255 60 60 / 0.3), rgb(0 220 255 / 0.3));
+        background: linear-gradient(90deg, rgb(255 60 60 / 0.85), rgb(0 190 220 / 0.85));
         @apply rounded-full px-2.5 py-0.5 text-xs font-bold whitespace-nowrap text-white;
     }
 

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
  * The password is asked for (hidden), or given with --password=...
  */
 Artisan::command('app:user {email} {--name=} {--password=}', function (string $email) {
-    $password = $this->option('password') ?: $this->secret('Parola (minim 8 caractere)');
+    $password = $this->option('password') ?: $this->secret('Password (at least 8 characters)');
 
     $validator = Validator::make(
         ['email' => $email, 'password' => $password],
@@ -31,7 +31,7 @@ Artisan::command('app:user {email} {--name=} {--password=}', function (string $e
     $isNew = ! $user->exists;
     $user->save();
 
-    $this->info($isNew ? "Utilizator creat: {$email}" : "Parolă schimbată pentru: {$email}");
+    $this->info($isNew ? "User created: {$email}" : "Password changed for: {$email}");
 
     return 0;
-})->purpose('Creează un utilizator sau îi schimbă parola');
+})->purpose('Create a user or change their password');

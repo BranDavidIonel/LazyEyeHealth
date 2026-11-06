@@ -34,14 +34,14 @@ class SettingsController extends Controller
             return response()->json(['settings' => $data]);
         }
 
-        return back()->with('success', 'Setările au fost salvate.');
+        return back()->with('success', __('Settings saved.'));
     }
 
     public function updatePassword(PasswordRequest $request): RedirectResponse
     {
         $request->user()->update(['password' => $request->string('password')->toString()]);
 
-        return back()->with('success', 'Parola a fost schimbată.');
+        return back()->with('success', __('Password changed.'));
     }
 
     /** The current settings as JSON (used after a calibration in another tab). */

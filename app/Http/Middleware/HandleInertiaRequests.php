@@ -43,6 +43,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            'locale' => app()->getLocale(),
             'auth' => [
                 'user' => $user ? $user->only(['id', 'name', 'email']) : null,
                 // false locally with AUTH_ENABLED=false: no logout button, no password change.

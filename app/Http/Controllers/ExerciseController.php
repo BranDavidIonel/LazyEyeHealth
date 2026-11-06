@@ -35,4 +35,10 @@ class ExerciseController extends Controller
     {
         return $this->show($request, $progress, 'calibrare');
     }
+
+    /** Physical (off-screen) exercises: Brock string, pencil push-ups, barrel card, patching... */
+    public function physical(Request $request, ProgressService $progress): Response
+    {
+        return $this->show($request, $progress, 'fara-ecran');
+    }
 }

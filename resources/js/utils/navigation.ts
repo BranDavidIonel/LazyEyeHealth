@@ -2,6 +2,7 @@
 import {
     BookOpen,
     ChartColumn,
+    Dumbbell,
     Eye,
     Gamepad2,
     House,
@@ -10,6 +11,7 @@ import type { Component } from 'vue';
 import { markRaw } from 'vue';
 
 export type NavItem = {
+    /** English label, translated with $t() where it is shown. */
     label: string;
     href: string;
     icon: Component;
@@ -20,11 +22,12 @@ export type NavItem = {
 
 export function navigationItems(): NavItem[] {
     return [
-        { label: 'Acasă', href: '/', icon: markRaw(House), match: '/', exact: true },
-        { label: 'Exerciții', href: '/exercitii', icon: markRaw(Gamepad2), match: '/exercitii' },
-        { label: 'Test de vedere', href: '/test-vedere', icon: markRaw(Eye), match: '/test-vedere' },
-        { label: 'Rapoarte', href: '/rapoarte', icon: markRaw(ChartColumn), match: '/rapoarte' },
-        { label: 'Ghid', href: '/ghid', icon: markRaw(BookOpen), match: '/ghid' },
+        { label: 'Home', href: '/', icon: markRaw(House), match: '/', exact: true },
+        { label: 'Exercises', href: '/exercitii', icon: markRaw(Gamepad2), match: '/exercitii' },
+        { label: 'Physical exercises', href: '/exercitii-fizice', icon: markRaw(Dumbbell), match: '/exercitii-fizice' },
+        { label: 'Vision test', href: '/test-vedere', icon: markRaw(Eye), match: '/test-vedere' },
+        { label: 'Reports', href: '/rapoarte', icon: markRaw(ChartColumn), match: '/rapoarte' },
+        { label: 'Guide', href: '/ghid', icon: markRaw(BookOpen), match: '/ghid' },
     ];
 }
 

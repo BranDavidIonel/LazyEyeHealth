@@ -61,6 +61,7 @@ class SettingsService
             'distanceCm' => ['sometimes', 'integer', 'between:20,700'],
             'calibrated' => ['sometimes', 'boolean'],
             'sizeCalibrated' => ['sometimes', 'boolean'],
+            'theme' => ['sometimes', Rule::in(['light', 'blue', 'dark'])],
         ];
     }
 

@@ -41,8 +41,8 @@ class DailyPlanService
             $plan[] = [
                 'kind' => 'setup',
                 'slug' => 'calibrare',
-                'title' => 'Calibrarea',
-                'text' => 'O singură dată, la început: ochelarii, testul de fuziune, echilibrul dintre ochi și mărimea ecranului.',
+                'title' => __('Calibration'),
+                'text' => __('Once, at the start: the glasses, the fusion test, the balance between the eyes and the screen size.'),
                 'minutes' => '5 min',
                 'done' => false,
                 'url' => '/calibrare',
@@ -50,14 +50,18 @@ class DailyPlanService
         }
 
         $game = ExerciseCatalog::find(self::DICHOPTIC[$dayNumber % count(self::DICHOPTIC)]);
-        $plan[] = $this->step('dichoptic', $game, 'Joc cu ambii ochi, cu ochelarii roșu-cyan.', '15–20 min', $done($game['slug']));
+        $plan[] = $this->step('dichoptic', $game, __('A game with both eyes, with the red-cyan glasses.'), '15–20 min', $done($game['slug']));
 
         $mono = ExerciseCatalog::find(self::MONO[$dayNumber % count(self::MONO)]);
-        $plan[] = $this->step('mono', $mono, 'Exercițiu de precizie doar pentru ochiul leneș.', '10 min', $done($mono['slug']));
+        $plan[] = $this->step('mono', $mono, __('A precision exercise for the lazy eye only.'), '10 min', $done($mono['slug']));
 
+        // Relief and convergence take turns (both need the glasses and tire the eyes).
         if ($dayNumber % 2 === 0) {
             $stereo = ExerciseCatalog::find('relief');
-            $plan[] = $this->step('stereo', $stereo, 'Antrenament pentru vederea în relief.', '5–10 min', $done('relief'));
+            $plan[] = $this->step('stereo', $stereo, __('Training for depth vision.'), '5–10 min', $done('relief'));
+        } else {
+            $vergence = ExerciseCatalog::find('convergenta');
+            $plan[] = $this->step('vergence', $vergence, __('The eyes learn to stay together (divergent strabismus).'), '5–10 min', $done('convergenta'));
         }
 
         $lastAcuity = VisionTest::query()
@@ -71,10 +75,10 @@ class DailyPlanService
             $plan[] = [
                 'kind' => 'test',
                 'slug' => null,
-                'title' => 'Testul săptămânal de vedere',
+                'title' => __('The weekly vision test'),
                 'text' => $daysSince === null
-                    ? 'Fă primul test cu tabelul de litere: el e punctul de plecare pentru comparații.'
-                    : "Ultimul test cu tabelul de litere a fost acum {$daysSince} zile.",
+                    ? __('Take the first letter chart test: it is the starting point for comparisons.')
+                    : __('The last letter chart test was :days days ago.', ['days' => $daysSince]),
                 'minutes' => '5 min',
                 'done' => false,
                 'url' => '/test-vedere/acuity',

@@ -4,20 +4,22 @@
  * pop-up windows (.amb.amb-overlay) the exercises add to <body>.
  */
 .amb {
-    --bg: #07090c;
-    --panel: #11151a;
-    --panel-2: #181d24;
-    --line: #262d36;
-    --line-2: #364050;
-    --text: #e9eef3;
-    --muted: #9aa5b1;
-    --accent: #4fc3f7;
-    --accent-ink: #00141d;
-    --good: #63d297;
-    --bad: #ff6b6b;
-    --warn: #ffc857;
+    /* The theme colours (resources/css/app.css), under the names the exercises use. */
+    --bg: var(--color-ink);
+    --panel: var(--color-panel);
+    --panel-2: var(--color-panel-2);
+    --line: var(--color-line);
+    --line-2: var(--color-line-2);
+    --text: var(--color-fg);
+    --muted: var(--color-muted);
+    --accent: var(--color-accent);
+    --accent-ink: var(--color-accent-ink);
+    --good: var(--color-good);
+    --bad: var(--color-bad);
+    --warn: var(--color-warn);
+    --hover: var(--color-hover);
     --radius: 14px;
-    --shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
+    --shadow: 0 12px 34px rgba(0, 0, 0, 0.3);
 
     color: var(--text);
     font-size: 16px;
@@ -80,8 +82,8 @@
     }
 
     & .btn:hover {
-        background: #20262f;
-        border-color: #475264;
+        background: var(--hover);
+        border-color: var(--accent);
     }
 
     & .btn.primary {
@@ -232,9 +234,9 @@
     }
 
     & .notice {
-        border: 1px solid #5a4a22;
-        background: #1d1809;
-        color: #f4e3b5;
+        border: 1px solid color-mix(in srgb, var(--warn) 45%, transparent);
+        background: color-mix(in srgb, var(--warn) 12%, var(--panel));
+        color: var(--text);
         border-radius: 12px;
         padding: 12px 16px;
         font-size: 0.95rem;
@@ -267,12 +269,12 @@
     }
 
     & .tag.di {
-        background: linear-gradient(90deg, rgba(255, 60, 60, 0.3), rgba(0, 220, 255, 0.3));
+        background: linear-gradient(90deg, rgba(255, 60, 60, 0.85), rgba(0, 190, 220, 0.85));
         color: #fff;
     }
 
     & .tag.mono {
-        background: rgba(255, 200, 87, 0.14);
+        background: color-mix(in srgb, var(--warn) 15%, transparent);
         color: var(--warn);
     }
 

@@ -5,113 +5,147 @@ namespace App\Support;
 /**
  * The list of exercises. One place for the slugs (URLs, practice time,
  * results), titles and the Vue page that runs each exercise.
+ * Texts are English and translated with __() (Romanian in lang/ro.json).
  *
  * group: 'dichoptic' = both eyes with red-cyan glasses (each eye sees other pieces)
  *        'stereo'    = both eyes with red-cyan glasses (depth / relief)
  *        'mono'      = only the lazy eye (glasses or patch on the good eye)
+ *        'vergence'  = strabismus / convergence training (eyes turning together)
  *        'setup'     = calibration, not shown in the exercise lists
  */
 class ExerciseCatalog
 {
+    /** @var list<array{slug: string, title: string, group: string, page: string, description: string, trains: string, minutes: string}> */
+    private const ITEMS = [
+        [
+            'slug' => 'tetris',
+            'title' => 'Dichoptic Tetris',
+            'group' => 'dichoptic',
+            'page' => 'exercises/Tetris',
+            'description' => 'The lazy eye sees the falling piece, the good eye sees the pieces already placed.',
+            'trains' => 'Eye teamwork, less suppression',
+            'minutes' => '15–20 min',
+        ],
+        [
+            'slug' => 'breakout',
+            'title' => 'Dichoptic Breakout',
+            'group' => 'dichoptic',
+            'page' => 'exercises/Breakout',
+            'description' => 'The lazy eye sees the ball and the bricks, the good eye sees the paddle.',
+            'trains' => 'Eye teamwork, eye-hand coordination',
+            'minutes' => '15–20 min',
+        ],
+        [
+            'slug' => 'sarpe',
+            'title' => 'Dichoptic Snake',
+            'group' => 'dichoptic',
+            'page' => 'exercises/Snake',
+            'description' => 'The lazy eye sees the snake, the good eye sees the food and the obstacles.',
+            'trains' => 'Eye teamwork, visual attention',
+            'minutes' => '10–15 min',
+        ],
+        [
+            'slug' => 'relief',
+            'title' => '3D relief',
+            'group' => 'stereo',
+            'page' => 'exercises/Stereo',
+            'description' => 'Random dots hide a square that stands out in depth. Say where it is.',
+            'trains' => 'Depth vision (stereopsis), fusion',
+            'minutes' => '10 min',
+        ],
+        [
+            'slug' => 'contrast',
+            'title' => 'Fine contrast',
+            'group' => 'mono',
+            'page' => 'exercises/Contrast',
+            'description' => 'Fainter and fainter stripes: say which way they are tilted.',
+            'trains' => 'Contrast sensitivity',
+            'minutes' => '10 min',
+        ],
+        [
+            'slug' => 'litera-e',
+            'title' => 'Letter E',
+            'group' => 'mono',
+            'page' => 'exercises/LetterE',
+            'description' => 'Which way does the letter E point? Smaller and smaller, with or without neighbouring letters.',
+            'trains' => 'Visual acuity, crowding',
+            'minutes' => '10 min',
+        ],
+        [
+            'slug' => 'vernier',
+            'title' => 'Aligned lines',
+            'group' => 'mono',
+            'page' => 'exercises/Vernier',
+            'description' => 'Two almost aligned lines: which way is the lower one shifted?',
+            'trains' => 'Hyperacuity (position precision)',
+            'minutes' => '5–10 min',
+        ],
+        [
+            'slug' => 'inel',
+            'title' => 'Open ring',
+            'group' => 'mono',
+            'page' => 'exercises/Ring',
+            'description' => 'Find the ring with a gap, against the clock.',
+            'trains' => 'Acuity, visual search, eye movements',
+            'minutes' => '5–10 min',
+        ],
+        [
+            'slug' => 'citire',
+            'title' => 'Reading with the lazy eye',
+            'group' => 'mono',
+            'page' => 'exercises/Reading',
+            'description' => 'Short texts in smaller and smaller print, read with the lazy eye only.',
+            'trains' => 'Reading, crowding, stamina',
+            'minutes' => '10–15 min',
+        ],
+        [
+            'slug' => 'convergenta',
+            'title' => 'Convergence training',
+            'group' => 'vergence',
+            'page' => 'exercises/Vergence',
+            'description' => 'Each eye sees its own picture; keep them as one while they move apart.',
+            'trains' => 'Convergence, control of the eye that drifts outward',
+            'minutes' => '5–10 min',
+        ],
+        [
+            'slug' => 'fara-ecran',
+            'title' => 'Physical exercises (off screen)',
+            'group' => 'vergence',
+            'page' => 'physical/Index',
+            'description' => 'Brock string, pencil push-ups, barrel card, patching: explanations, drawings, timer and measurements.',
+            'trains' => 'Near convergence, control of the drifting eye, patching',
+            'minutes' => '10–20 min',
+        ],
+        [
+            'slug' => 'calibrare',
+            'title' => 'Calibration',
+            'group' => 'setup',
+            'page' => 'exercises/Calibration',
+            'description' => 'The glasses, the Worth fusion test, the balance between the eyes and the screen size.',
+            'trains' => 'Setup',
+            'minutes' => '5 min',
+        ],
+    ];
+
     /**
+     * Every exercise, keyed by slug, with the texts in the current language.
+     *
      * @return array<string, array{slug: string, title: string, group: string, page: string, description: string, trains: string, minutes: string}>
      */
     public static function all(): array
     {
-        $items = [
-            [
-                'slug' => 'tetris',
-                'title' => 'Tetris dihoptic',
-                'group' => 'dichoptic',
-                'page' => 'exercises/Tetris',
-                'description' => 'Piesa care cade o vede ochiul leneș, piesele așezate le vede ochiul bun.',
-                'trains' => 'Colaborarea ochilor, reducerea suprimării',
-                'minutes' => '15–20 min',
-            ],
-            [
-                'slug' => 'breakout',
-                'title' => 'Breakout dihoptic',
-                'group' => 'dichoptic',
-                'page' => 'exercises/Breakout',
-                'description' => 'Mingea și cărămizile le vede ochiul leneș, paleta o vede ochiul bun.',
-                'trains' => 'Colaborarea ochilor, coordonarea ochi-mână',
-                'minutes' => '15–20 min',
-            ],
-            [
-                'slug' => 'sarpe',
-                'title' => 'Șarpele dihoptic',
-                'group' => 'dichoptic',
-                'page' => 'exercises/Snake',
-                'description' => 'Șarpele îl vede ochiul leneș, mâncarea și obstacolele le vede ochiul bun.',
-                'trains' => 'Colaborarea ochilor, atenția vizuală',
-                'minutes' => '10–15 min',
-            ],
-            [
-                'slug' => 'relief',
-                'title' => 'Relief 3D',
-                'group' => 'stereo',
-                'page' => 'exercises/Stereo',
-                'description' => 'Puncte aleatorii în care se ascunde o formă în relief. Spui ce formă vezi.',
-                'trains' => 'Vederea în relief (stereopsis), fuziunea',
-                'minutes' => '10 min',
-            ],
-            [
-                'slug' => 'contrast',
-                'title' => 'Contrast fin',
-                'group' => 'mono',
-                'page' => 'exercises/Contrast',
-                'description' => 'Dungi tot mai șterse: spui încotro sunt înclinate.',
-                'trains' => 'Sensibilitatea la contrast',
-                'minutes' => '10 min',
-            ],
-            [
-                'slug' => 'litera-e',
-                'title' => 'Litera E',
-                'group' => 'mono',
-                'page' => 'exercises/LetterE',
-                'description' => 'Încotro arată litera E? Tot mai mică, cu sau fără litere vecine.',
-                'trains' => 'Acuitatea vizuală, aglomerarea (crowding)',
-                'minutes' => '10 min',
-            ],
-            [
-                'slug' => 'vernier',
-                'title' => 'Linii aliniate',
-                'group' => 'mono',
-                'page' => 'exercises/Vernier',
-                'description' => 'Două linii aproape aliniate: încotro e mutată cea de jos?',
-                'trains' => 'Hiperacuitatea (precizia poziției)',
-                'minutes' => '5–10 min',
-            ],
-            [
-                'slug' => 'inel',
-                'title' => 'Inelul deschis',
-                'group' => 'mono',
-                'page' => 'exercises/Ring',
-                'description' => 'Găsește inelul care are o deschizătură, contra cronometru.',
-                'trains' => 'Acuitatea, căutarea vizuală, mișcările ochiului',
-                'minutes' => '5–10 min',
-            ],
-            [
-                'slug' => 'citire',
-                'title' => 'Citire cu ochiul leneș',
-                'group' => 'mono',
-                'page' => 'exercises/Reading',
-                'description' => 'Texte scurte, tot mai mici, citite doar cu ochiul leneș.',
-                'trains' => 'Citirea, aglomerarea, rezistența la efort',
-                'minutes' => '10–15 min',
-            ],
-            [
-                'slug' => 'calibrare',
-                'title' => 'Calibrare',
-                'group' => 'setup',
-                'page' => 'exercises/Calibration',
-                'description' => 'Ochelarii, testul de fuziune Worth, echilibrul dintre ochi și mărimea ecranului.',
-                'trains' => 'Pregătire',
-                'minutes' => '5 min',
-            ],
-        ];
+        $out = [];
 
-        return collect($items)->keyBy('slug')->all();
+        foreach (self::ITEMS as $item) {
+            $out[$item['slug']] = [
+                ...$item,
+                'title' => __($item['title']),
+                'description' => __($item['description']),
+                'trains' => __($item['trains']),
+            ];
+        }
+
+        return $out;
     }
 
     /** Exercises shown in the lists (without the calibration). */
@@ -126,16 +160,22 @@ class ExerciseCatalog
         return self::all()[$slug] ?? null;
     }
 
+    /** @return list<string> */
+    public static function slugs(): array
+    {
+        return array_column(self::ITEMS, 'slug');
+    }
+
     /** Keys that may log practice time: every exercise, the calibration and the vision tests. */
     public static function practiceKeys(): array
     {
-        return [...array_keys(self::all()), 'test-vedere'];
+        return [...self::slugs(), 'test-vedere'];
     }
 
     /** Keys that may store results: every exercise plus the extra series the exercises write. */
     public static function resultKeys(): array
     {
-        return [...array_keys(self::all()), 'balance', 'worth'];
+        return [...self::slugs(), 'balance', 'worth'];
     }
 
     /** Extra result series an exercise page needs besides its own. */
@@ -143,17 +183,34 @@ class ExerciseCatalog
     {
         return match ($slug) {
             'calibrare' => ['worth', 'balance'],
+            'convergenta', 'relief' => ['worth'],
             'tetris', 'breakout', 'sarpe' => ['balance'],
             default => [],
         };
     }
 
+    /** Group of a practice key ('test-vedere' counts as 'test'). */
+    public static function group(string $key): string
+    {
+        if ($key === 'test-vedere') {
+            return 'test';
+        }
+
+        foreach (self::ITEMS as $item) {
+            if ($item['slug'] === $key) {
+                return $item['group'];
+            }
+        }
+
+        return 'other';
+    }
+
     public static function title(string $key): string
     {
         return match ($key) {
-            'test-vedere' => 'Test de vedere',
-            'balance' => 'Echilibru ochi',
-            'worth' => 'Test Worth',
+            'test-vedere' => __('Vision test'),
+            'balance' => __('Eye balance'),
+            'worth' => __('Worth test'),
             default => self::all()[$key]['title'] ?? $key,
         };
     }

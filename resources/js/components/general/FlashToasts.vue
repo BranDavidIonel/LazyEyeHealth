@@ -9,15 +9,15 @@
             class="pointer-events-auto flex max-w-md items-center gap-3 rounded-lg border px-4 py-3 text-sm shadow-lg"
             :class="
                 toast.kind === 'error'
-                    ? 'border-bad/40 bg-[#2a1214] text-bad'
-                    : 'border-good/40 bg-[#0f2219] text-good'
+                    ? 'border-bad/40 bg-panel text-bad'
+                    : 'border-good/40 bg-panel text-good'
             "
         >
             <span class="flex-1">{{ toast.text }}</span>
             <button
                 type="button"
                 class="text-muted hover:text-fg"
-                aria-label="Închide"
+                :aria-label="$t('Close')"
                 @click="remove(toast.id)"
             >
                 ×
@@ -33,7 +33,7 @@ type Toast = { id: number; kind: 'success' | 'error'; text: string };
 
 let nextId = 1;
 
-/** Messages from the server ("Setările au fost salvate."), shown for a few seconds. */
+/** Messages from the server ("Settings saved."), shown for a few seconds. */
 export default defineComponent({
     name: 'FlashToasts',
 

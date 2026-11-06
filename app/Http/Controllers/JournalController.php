@@ -20,6 +20,6 @@ class JournalController extends Controller
             ],
         );
 
-        return back()->with('success', 'Jurnalul zilei a fost salvat.');
+        return back()->with('success', __('Journal for the day saved.'));
     }
 }

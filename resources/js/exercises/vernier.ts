@@ -2,6 +2,7 @@
 // shifted left or right by a few seconds of arc. Trains position precision
 // (hyperacuity) of the lazy eye. Ported from Exercitii-ambliopie/vernier.html.
 import Amb from '@/amb';
+import { t } from '@/i18n';
 import type { Runtime } from '@/exercises/runtime';
 
 const ID = 'vernier';
@@ -101,10 +102,10 @@ export default function start(rt: Runtime): void {
     function ui(): void {
         $('startBtn').textContent =
             state === 'running'
-                ? 'Pauză'
+                ? t('Pause')
                 : state === 'paused'
-                  ? 'Continuă'
-                  : 'Start';
+                  ? t('Continue')
+                  : t('Start');
         stats();
     }
 
@@ -154,10 +155,10 @@ export default function start(rt: Runtime): void {
         if (ok) {
             points += Math.max(1, Math.round(5 + 10 * Math.log10(40 / d)));
             Amb.beep('ok');
-            fb('Corect', true);
+            fb(t('Correct'), true);
         } else {
             Amb.beep('bad');
-            fb('Greșit', false);
+            fb(t('Wrong'), false);
         }
 
         drawBlank();
@@ -178,10 +179,10 @@ export default function start(rt: Runtime): void {
         fb('');
         ui();
         Amb.overlay(
-            '<h2>Pauză</h2><p>Exercițiul e oprit. Când ești gata, verifică ochelarii sau ocluzorul și apasă „Continuă”.</p>',
+            `<h2>${t('Pause')}</h2><p>${t('The exercise is paused. When you are ready, check the glasses or the patch and press “Continue”.')}</p>`,
             [
-                { label: 'Meniu', onClick: () => Amb.go(Amb.urls.home) },
-                { label: 'Continuă', primary: true, onClick: resume },
+                { label: t('Main menu'), onClick: () => Amb.go(Amb.urls.home) },
+                { label: t('Continue'), primary: true, onClick: resume },
             ],
         );
     }
@@ -206,8 +207,7 @@ export default function start(rt: Runtime): void {
         let h: string;
 
         if (prev == null) {
-            h =
-                '<p>Este primul tău rezultat. Repetă exercițiul în zilele următoare ca să vezi cum evoluezi.</p>';
+            h = `<p>${t('This is your first result. Repeat the exercise in the next days to see how you progress.')}</p>`;
         } else {
             const p =
                 prev > 0
@@ -215,19 +215,17 @@ export default function start(rt: Runtime): void {
                     : 0;
 
             if (Math.abs(p) < 3) {
-                h =
-                    '<p>Aproape la fel ca data trecută. Constanța e un semn bun, continuă!</p>';
+                h = `<p>${t('Almost the same as last time. Being steady is a good sign, keep going!')}</p>`;
             } else if (p > 0) {
-                h = `<p class="good">Mai bine cu ${Math.round(p)}% decât data trecută.</p><p>Bravo! Exercițiul regulat dă rezultate.</p>`;
+                h = `<p class="good">${t('Better by :pct% than last time.', { pct: Math.round(p) })}</p><p>${t('Well done! Regular practice pays off.')}</p>`;
             } else {
                 h =
-                    `<p class="bad">Cu ${Math.round(-p)}% mai slab decât data trecută.</p>` +
-                    '<p>Nu-ți face griji: oboseala, lumina și atenția schimbă rezultatul de la o zi la alta. Contează tendința pe mai multe zile.</p>';
+                    `<p class="bad">${t('Weaker by :pct% than last time.', { pct: Math.round(-p) })}</p>` +
+                    `<p>${t('Do not worry: tiredness, light and attention change the result from one day to the next. The trend over several days is what counts.')}</p>`;
             }
 
             if (prevMode && prevMode !== Amb.settings().viewMode) {
-                h +=
-                    '<p class="hint">Data trecută ai lucrat în alt mod (ochelari / ocluzor), așa că comparația e orientativă.</p>';
+                h += `<p class="hint">${t('Last time you worked in another mode (glasses / patch), so the comparison is only approximate.')}</p>`;
             }
         }
 
@@ -254,25 +252,23 @@ export default function start(rt: Runtime): void {
         });
         Amb.beep('win');
         Amb.overlay(
-            '<h2>Rundă terminată</h2>' +
-                `<p>Prag de aliniere: <b>${sec(arcsec)}</b> (secunde de arc)</p>` +
+            `<h2>${t('Round finished')}</h2>` +
+                `<p>${t('Alignment threshold: <b>:value</b> (seconds of arc)', { value: sec(arcsec) })}</p>` +
                 '<div class="result-grid">' +
-                cell('Prag de aliniere', sec(arcsec)) +
-                cell('În pixeli de ecran', fmt(px, 2)) +
-                cell('Corecte', `${Math.round(sc!.accuracy * 100)}%`) +
-                cell('Puncte', points) +
+                cell(t('Alignment threshold'), sec(arcsec)) +
+                cell(t('In screen pixels'), fmt(px, 2)) +
+                cell(t('Correct answers'), `${Math.round(sc!.accuracy * 100)}%`) +
+                cell(t('Points'), points) +
                 '</div>' +
-                '<p class="hint">Mai mic e mai bine. Ca reper aproximativ, un ochi sănătos ajunge de obicei pe la 10–30″ ' +
-                '(depinde mult de ecran, distanță și lumină).</p>' +
+                `<p class="hint">${t('Lower is better. As a rough guide, a healthy eye usually gets to about 10–30″ (it depends a lot on the screen, the distance and the light).')}</p>` +
                 (sc!.atFloor
-                    ? '<p class="good">Ai ajuns la cel mai mic decalaj din program. Ca să măsurăm mai fin, stai mai departe ' +
-                      `de ecran și actualizează distanța în <a href="${Amb.urls.calibration}">calibrare</a>.</p>`
+                    ? `<p class="good">${t('You reached the smallest shift of the program. To measure finer, sit further from the screen and update the distance in the <a href=":url">calibration</a>.', { url: Amb.urls.calibration })}</p>`
                     : '') +
                 compare(arcsec, prev ? prev.arcsec : null, false, prev?.mode) +
-                '<p class="hint">Cifrele sunt estimări de antrenament, nu un diagnostic medical.</p>',
+                `<p class="hint">${t('The numbers are training estimates, not a medical diagnosis.')}</p>`,
             [
-                { label: 'Meniu', onClick: () => Amb.go(Amb.urls.home) },
-                { label: 'Încă o rundă', primary: true, onClick: startBlock },
+                { label: t('Main menu'), onClick: () => Amb.go(Amb.urls.home) },
+                { label: t('One more round'), primary: true, onClick: startBlock },
             ],
         );
     }
@@ -330,11 +326,12 @@ export default function start(rt: Runtime): void {
 
     /* ---------- init ---------- */
     const st = Amb.settings();
-    const distLine = `Stai la ~${st.distanceCm} cm de ecran.`;
+    const distLine = t('Sit about :cm cm from the screen.', { cm: st.distanceCm });
     $('instr').innerHTML = `<p>${Amb.setupText('mono')}</p><p>${distLine}</p>`;
-    const calText =
-        'Ecranul nu e calibrat încă, așa că valorile în secunde de arc sunt aproximative. ' +
-        `<a href="${Amb.urls.calibration}">Calibrează mărimea ecranului</a>.`;
+    const calText = t(
+        'The screen is not calibrated yet, so the values in seconds of arc are approximate. <a href=":url">Calibrate the screen size</a>.',
+        { url: Amb.urls.calibration },
+    );
 
     if (!st.sizeCalibrated) {
         $('calHint').hidden = false;
@@ -348,13 +345,11 @@ export default function start(rt: Runtime): void {
     Amb.startTracking(ID, { onPause: pause, onResume: () => {} });
 
     Amb.overlay(
-        '<h2>Aliniere linii</h2>' +
+        `<h2>${t('Aligned lines')}</h2>` +
             `<p>${Amb.setupText('mono')}</p>` +
             `<p>${distLine}</p>` +
-            '<p>Apar două linii verticale, una deasupra celeilalte. Linia de jos e mutată puțin la stânga sau la dreapta. ' +
-            'Spune încotro (<kbd>←</kbd> sau <kbd>→</kbd>). Decalajul se micșorează când răspunzi corect; ' +
-            'când nu mai vezi diferența, ghicește: e normal.</p>' +
+            `<p>${t('Two vertical lines appear, one above the other. The lower line is shifted a little to the left or to the right. Say which way (<kbd>←</kbd> or <kbd>→</kbd>). The shift gets smaller when you answer correctly; when you no longer see the difference, guess: that is normal.')}</p>` +
             (st.sizeCalibrated ? '' : `<p class="hint">${calText}</p>`),
-        [{ label: 'Start', primary: true, onClick: startBlock }],
+        [{ label: t('Start'), primary: true, onClick: startBlock }],
     );
 }

@@ -57,7 +57,8 @@ class VisionTestController extends Controller
     public function store(VisionTestRequest $request, VisionProgressService $progress): JsonResponse
     {
         $test = VisionTest::query()->create([
-            ...$request->safe()->only(['type', 'eye', 'distance_cm', 'score', 'data', 'note']),
+            ...$request->safe()->only(['type', 'eye', 'distance_cm', 'score', 'note']),
+            'data' => $request->details(),
             'user_id' => $request->user()->id,
             'date' => today()->toDateString(),
         ]);
@@ -76,7 +77,7 @@ class VisionTestController extends Controller
 
         $visionTest->update($request->validate(['note' => ['nullable', 'string', 'max:1000']]));
 
-        return back()->with('success', 'Nota a fost salvată.');
+        return back()->with('success', __('Note saved.'));
     }
 
     public function destroy(Request $request, VisionTest $visionTest): RedirectResponse
@@ -85,6 +86,6 @@ class VisionTestController extends Controller
 
         $visionTest->delete();
 
-        return back()->with('success', 'Testul a fost șters.');
+        return back()->with('success', __('Test deleted.'));
     }
 }

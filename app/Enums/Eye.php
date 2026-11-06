@@ -11,9 +11,9 @@ enum Eye: string
     public function label(): string
     {
         return match ($this) {
-            self::Right => 'Ochiul drept',
-            self::Left => 'Ochiul stâng',
-            self::Both => 'Ambii ochi',
+            self::Right => __('Right eye'),
+            self::Left => __('Left eye'),
+            self::Both => __('Both eyes'),
         };
     }
 }

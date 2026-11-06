@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
 
         if (! $password) {
             $password = Str::password(16);
-            $this->command?->warn("ADMIN_PASSWORD lipsește din .env. Parolă generată pentru {$admin['email']}: {$password}");
+            $this->command?->warn("ADMIN_PASSWORD is missing from .env. Generated password for {$admin['email']}: {$password}");
         }
 
         User::query()->updateOrCreate(

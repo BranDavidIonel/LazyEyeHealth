@@ -34,19 +34,19 @@ class ReportService
             $from = CarbonImmutable::createFromFormat('Y-m-d', $month.'-01')->startOfDay();
             $to = $from->endOfMonth()->startOfDay();
 
-            return ['from' => $from, 'to' => $to->gt($today) ? $today : $to, 'key' => 'luna', 'label' => ucfirst($from->locale('ro')->translatedFormat('F Y'))];
+            return ['from' => $from, 'to' => $to->gt($today) ? $today : $to, 'key' => 'luna', 'label' => ucfirst($from->locale(app()->getLocale())->translatedFormat('F Y'))];
         }
 
         if ($period === 'toate') {
             $first = PracticeLog::query()->where('user_id', $user->id)->min('date');
             $from = $first ? CarbonImmutable::parse(substr((string) $first, 0, 10)) : $today->subDays(29);
 
-            return ['from' => $from->min($today->subDays(6)), 'to' => $today, 'key' => 'toate', 'label' => 'De la început'];
+            return ['from' => $from->min($today->subDays(6)), 'to' => $today, 'key' => 'toate', 'label' => __('Since the start')];
         }
 
         $days = in_array((int) $period, [7, 30, 90, 365], true) ? (int) $period : 30;
 
-        return ['from' => $today->subDays($days - 1), 'to' => $today, 'key' => (string) $days, 'label' => "Ultimele {$days} de zile"];
+        return ['from' => $today->subDays($days - 1), 'to' => $today, 'key' => (string) $days, 'label' => __('Last :days days', ['days' => $days])];
     }
 
     /** @return array<string, mixed> */
@@ -110,7 +110,7 @@ class ReportService
         }
 
         if (isset($totals['test-vedere'])) {
-            $perExercise[] = ['slug' => 'test-vedere', 'title' => 'Teste de vedere', 'group' => 'test', 'seconds' => $totals['test-vedere'], 'rounds' => 0];
+            $perExercise[] = ['slug' => 'test-vedere', 'title' => __('Vision tests'), 'group' => 'test', 'seconds' => $totals['test-vedere'], 'rounds' => 0];
         }
 
         usort($perExercise, fn ($a, $b) => $b['seconds'] <=> $a['seconds']);
@@ -153,7 +153,7 @@ class ReportService
         $slugs = [...array_keys(ExerciseCatalog::all()), 'test-vedere'];
         $notes = collect($report['journal'])->keyBy('date');
 
-        $rows = [['Data', 'Total minute', ...array_map(fn ($s) => ExerciseCatalog::title($s).' (min)', $slugs), 'Ocluzie în afara aplicației (min)', 'Obiectiv atins', 'Notă']];
+        $rows = [[__('Date'), __('Total minutes'), ...array_map(fn ($s) => ExerciseCatalog::title($s).' (min)', $slugs), __('Patching outside the app (min)'), __('Goal reached'), __('Note')]];
 
         foreach ($report['daily'] as $day) {
             $rows[] = [
@@ -161,7 +161,7 @@ class ReportService
                 round($day['total'] / 60, 1),
                 ...array_map(fn ($s) => round(($day['exercises'][$s] ?? 0) / 60, 1), $slugs),
                 $day['patch_minutes'],
-                $day['goal_met'] ? 'da' : 'nu',
+                $day['goal_met'] ? __('yes') : __('no'),
                 (string) ($notes[$day['date']]['note'] ?? ''),
             ];
         }

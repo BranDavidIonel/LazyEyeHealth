@@ -6,7 +6,7 @@ import type { AmbResult } from '@/amb';
 export type ExerciseMeta = {
     slug: string;
     title: string;
-    group: 'dichoptic' | 'stereo' | 'mono' | 'setup';
+    group: 'dichoptic' | 'stereo' | 'mono' | 'vergence' | 'setup';
     page: string;
     description: string;
     trains: string;

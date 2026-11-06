@@ -20,9 +20,9 @@ class PasswordRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'current_password.current_password' => 'Parola actuală nu este corectă.',
-            'password.confirmed' => 'Cele două parole noi nu sunt la fel.',
-            'password.min' => 'Parola nouă trebuie să aibă cel puțin 8 caractere.',
+            'current_password.current_password' => __('The current password is not correct.'),
+            'password.confirmed' => __('The two new passwords do not match.'),
+            'password.min' => __('The new password must have at least 8 characters.'),
         ];
     }
 }

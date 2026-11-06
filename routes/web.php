@@ -6,11 +6,15 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ExerciseResultController;
 use App\Http\Controllers\JournalController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\PracticeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\VisionTestController;
 use Illuminate\Support\Facades\Route;
+
+// Language switcher (works on the login page too).
+Route::put('locale', [LocaleController::class, 'update'])->name('locale.update');
 
 // Login (skipped locally when AUTH_ENABLED=false, see App\Support\AuthMode).
 Route::middleware('guest')->group(function () {
@@ -30,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('exercitii', [ExerciseController::class, 'index'])->name('exercises.index');
     Route::get('exercitii/{slug}', [ExerciseController::class, 'show'])->name('exercises.show');
     Route::get('calibrare', [ExerciseController::class, 'calibration'])->name('calibration');
+    Route::get('exercitii-fizice', [ExerciseController::class, 'physical'])->name('physical');
 
     // Vision checks and the monthly comparison.
     Route::get('test-vedere', [VisionTestController::class, 'index'])->name('vision.index');

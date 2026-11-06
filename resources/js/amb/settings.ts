@@ -28,6 +28,8 @@ export type AmbSettings = {
     distanceCm: number;
     calibrated: boolean;
     sizeCalibrated: boolean;
+    /** interface colours (see resources/js/utils/theme.ts) */
+    theme: 'light' | 'blue' | 'dark';
 };
 
 export const DEFAULTS: AmbSettings = {
@@ -46,6 +48,7 @@ export const DEFAULTS: AmbSettings = {
     distanceCm: 60,
     calibrated: false,
     sizeCalibrated: false,
+    theme: 'light',
 };
 
 const state = reactive<AmbSettings>({ ...DEFAULTS });

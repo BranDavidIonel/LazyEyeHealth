@@ -34,7 +34,7 @@ class LoginRequest extends FormRequest
             event(new Lockout($this));
 
             throw ValidationException::withMessages([
-                'email' => 'Prea multe încercări. Încearcă din nou peste '.RateLimiter::availableIn($key).' secunde.',
+                'email' => __('Too many attempts. Try again in :seconds seconds.', ['seconds' => RateLimiter::availableIn($key)]),
             ]);
         }
 
@@ -42,7 +42,7 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($key);
 
             throw ValidationException::withMessages([
-                'email' => 'Emailul sau parola nu sunt corecte.',
+                'email' => __('The email or the password is not correct.'),
             ]);
         }
 

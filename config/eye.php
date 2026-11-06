@@ -48,6 +48,7 @@ return [
         'distanceCm' => 60,        // usual distance to the screen for the exercises
         'calibrated' => false,
         'sizeCalibrated' => false,
+        'theme' => 'light',        // interface colours: 'light' | 'blue' | 'dark'
     ],
 
 ];

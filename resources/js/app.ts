@@ -1,4 +1,5 @@
 import { createInertiaApp } from '@inertiajs/vue3';
+import { i18n, setLocale } from '@/i18n';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { flushQueue } from '@/lib/http';
 
@@ -19,7 +20,10 @@ function hasOwnFrame(name: string): boolean {
 void createInertiaApp({
     title: (title) => (title ? `${title} · ${appName}` : appName),
     layout: (name) => (hasOwnFrame(name) ? null : AppLayout),
-    withApp: (app) => {
+    withApp: (app, { page }) => {
+        // Language before the first render, so the page never flashes in the wrong one.
+        setLocale(String(page.props.locale ?? 'ro'));
+        app.use(i18n);
         app.directive('focus', {
             mounted: (el: HTMLElement, shouldFocus) => {
                 if (shouldFocus.value !== false) {

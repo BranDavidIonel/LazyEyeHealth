@@ -2,6 +2,7 @@
 // (setActive(true)), every second is counted; every 15 s the seconds are sent
 // to the server (POST /api/practice), and once more when the page closes.
 import { reactive } from 'vue';
+import { t } from '@/i18n';
 import { sendOrQueue } from '@/lib/http';
 import { overlay } from './overlay';
 import { settings } from './settings';
@@ -154,14 +155,13 @@ function showBreak(): void {
     };
 
     const modal = overlay(
-        '<h2>Pauză pentru ochi</h2>' +
-            `<p>Ai lucrat ${minutes} de minute. Scoate ochelarii sau ocluzorul și privește 20 de secunde ` +
-            'la ceva aflat la cel puțin 6 metri (pe geam sau în capătul camerei). Clipește des.</p>' +
+        `<h2>${t('Eye break')}</h2>` +
+            `<p>${t('You have worked for :min minutes. Take off the glasses or the patch and look for 20 seconds at something at least 6 metres away (out of the window or at the end of the room). Blink often.', { min: minutes })}</p>` +
             '<div class="amb-big" id="amb-break-count">20</div>',
         [
-            { label: 'Sari peste', onClick: done },
+            { label: t('Skip'), onClick: done },
             {
-                label: 'Am făcut pauza',
+                label: t('I took the break'),
                 primary: true,
                 id: 'amb-break-go',
                 disabled: true,
