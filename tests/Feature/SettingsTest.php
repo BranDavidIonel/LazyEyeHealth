@@ -56,7 +56,8 @@ class SettingsTest extends TestCase
         $this->assertSame(200, $stored['redLevel']);
         $this->assertFalse($stored['sound']);
         $this->assertSame(4.25, $stored['pxPerMm']);
-        $this->assertSame('right', $stored['redSide']);
+        // keys that were not sent keep their default
+        $this->assertSame('left', $stored['redSide']);
     }
 
     public function test_later_changes_keep_the_earlier_ones(): void

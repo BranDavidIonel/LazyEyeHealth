@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\ExerciseResult;
+use App\Models\JournalEntry;
 use App\Models\PracticeLog;
 use App\Services\ProgressService;
 use Carbon\CarbonImmutable;
@@ -260,6 +261,36 @@ class PracticeAndResultsTest extends TestCase
 
         $this->signIn();
         $this->get('/exercitii/tetris')->assertInertia(fn (Assert $page) => $page->has('results.tetris', 0));
+    }
+
+    /* ---------- journal ---------- */
+
+    public function test_the_journal_keeps_one_entry_per_day(): void
+    {
+        $user = $this->signIn();
+
+        $this->from('/')->put('/jurnal', ['patch_minutes' => 60, 'eye_comfort' => 4, 'note' => 'bine'])
+            ->assertRedirect('/')
+            ->assertSessionHasNoErrors();
+        $this->put('/jurnal', ['patch_minutes' => 90]);
+        $this->put('/jurnal', ['date' => '2026-11-01', 'patch_minutes' => 30]);
+
+        $this->assertSame(2, JournalEntry::query()->where('user_id', $user->id)->count());
+        $today = JournalEntry::query()->where('date', '2026-11-06')->firstOrFail();
+        $this->assertSame(90, $today->patch_minutes);
+        $this->assertNull($today->note);
+
+        $this->get('/')->assertInertia(fn (Assert $page) => $page->where('journal.patch_minutes', 90));
+    }
+
+    public function test_the_journal_is_validated(): void
+    {
+        $this->signIn();
+
+        $this->from('/')->put('/jurnal', ['date' => '2026-11-07', 'patch_minutes' => 2000, 'eye_comfort' => 9])
+            ->assertSessionHasErrors(['date', 'patch_minutes', 'eye_comfort']);
+
+        $this->assertSame(0, JournalEntry::query()->count());
     }
 
     public function test_exercise_summaries(): void

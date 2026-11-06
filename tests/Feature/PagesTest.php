@@ -90,8 +90,7 @@ class PagesTest extends TestCase
         $this->get("/exercitii/{$slug}")
             ->assertOk()
             ->assertInertia(function (Assert $page) use ($exercise, $slug, $keys) {
-                // (the .vue file itself is checked once in test_every_rendered_page_has_a_vue_file)
-                $page->component($exercise['page'], false)
+                $page->component($exercise['page'])
                     ->where('exercise.slug', $slug)
                     ->where('exercise.page', $exercise['page'])
                     ->has('results', count($keys));
@@ -130,7 +129,7 @@ class PagesTest extends TestCase
         $this->get('/exercitii-fizice')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
-                ->component(ExerciseCatalog::find('fara-ecran')['page'], false)
+                ->component(ExerciseCatalog::find('fara-ecran')['page'])
                 ->where('exercise.slug', 'fara-ecran'));
     }
 
@@ -257,13 +256,13 @@ class PagesTest extends TestCase
 
         $this->get('/ghid')
             ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page->component('Guide', false));
+            ->assertInertia(fn (Assert $page) => $page->component('Guide'));
     }
 
     public function test_every_rendered_page_has_a_vue_file(): void
     {
         $pages = [
-            'Dashboard', 'Guide', 'auth/Login', 'exercises/Index', 'settings/Edit', 'reports/Index',
+            'Dashboard', 'Guide', 'auth/Login', 'auth/Register', 'exercises/Index', 'settings/Edit', 'reports/Index',
             'vision/Index', 'vision/Acuity', 'vision/Reading', 'vision/Contrast',
             ...array_column(ExerciseCatalog::all(), 'page'),
         ];

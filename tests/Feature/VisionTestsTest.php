@@ -122,6 +122,8 @@ class VisionTestsTest extends TestCase
         ])->assertCreated();
 
         $test = VisionTest::query()->firstOrFail();
+        // Laravel's ConvertEmptyStringsToNull middleware turns the empty answer into null
+        $triplets[2]['typed'] = null;
         $this->assertSame($triplets, $test->data['triplets']);
         $this->assertSame(0.15, $test->data['last_full_triplet']);
     }

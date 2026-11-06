@@ -46,7 +46,7 @@ class ReportService
 
         $days = in_array((int) $period, [7, 30, 90, 365], true) ? (int) $period : 30;
 
-        return ['from' => $today->subDays($days - 1), 'to' => $today, 'key' => (string) $days, 'label' => __('Last :days days', ['days' => $days])];
+        return ['from' => $today->subDays($days - 1), 'to' => $today, 'key' => (string) $days, 'label' => trans_choice('Last :days days', $days, ['days' => $days])];
     }
 
     /** @return array<string, mixed> */

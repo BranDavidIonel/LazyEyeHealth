@@ -47,7 +47,7 @@
     "The eyes learn to stay together (divergent strabismus).": "Ochii învață să rămână împreună (strabism divergent).",
     "The weekly vision test": "Testul săptămânal de vedere",
     "Take the first letter chart test: it is the starting point for comparisons.": "Fă primul test cu tabelul de litere: el e punctul de plecare pentru comparații.",
-    "The last letter chart test was :days days ago.": "Ultimul test cu tabelul de litere a fost acum :days zile.",
+    "The last letter chart test was :days days ago.": "Ultimul test cu tabelul de litere a fost acum o zi.|Ultimul test cu tabelul de litere a fost acum :days zile.|Ultimul test cu tabelul de litere a fost acum :days de zile.",
 
     "Right eye": "Ochiul drept",
     "Left eye": "Ochiul stâng",
@@ -65,11 +65,11 @@
     "The current password is not correct.": "Parola actuală nu este corectă.",
     "The two new passwords do not match.": "Cele două parole noi nu sunt la fel.",
     "The new password must have at least 8 characters.": "Parola nouă trebuie să aibă cel puțin 8 caractere.",
-    "Too many attempts. Try again in :seconds seconds.": "Prea multe încercări. Încearcă din nou peste :seconds secunde.",
+    "Too many attempts. Try again in :seconds seconds.": "Prea multe încercări. Încearcă din nou peste o secundă.|Prea multe încercări. Încearcă din nou peste :seconds secunde.|Prea multe încercări. Încearcă din nou peste :seconds de secunde.",
     "The email or the password is not correct.": "Emailul sau parola nu sunt corecte.",
 
     "Since the start": "De la început",
-    "Last :days days": "Ultimele :days de zile",
+    "Last :days days": "Ultima zi|Ultimele :days zile|Ultimele :days de zile",
     "Date": "Data",
     "Total minutes": "Total minute",
     "Patching outside the app (min)": "Ocluzie în afara aplicației (min)",

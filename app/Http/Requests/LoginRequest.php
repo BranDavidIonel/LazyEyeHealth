@@ -34,7 +34,7 @@ class LoginRequest extends FormRequest
             event(new Lockout($this));
 
             throw ValidationException::withMessages([
-                'email' => __('Too many attempts. Try again in :seconds seconds.', ['seconds' => RateLimiter::availableIn($key)]),
+                'email' => trans_choice('Too many attempts. Try again in :seconds seconds.', RateLimiter::availableIn($key), ['seconds' => RateLimiter::availableIn($key)]),
             ]);
         }
 

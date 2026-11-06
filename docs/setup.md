@@ -9,6 +9,12 @@
 
 ## Run locally (Windows, XAMPP)
 
+**The easy way:** double-click `C:\Users\brand\Desktop\work\start_lazyeyehealth.bat` (it calls `start-local.bat` in the project). It installs what is missing the first time (Composer and npm packages, `.env` in local mode without login, the SQLite database with the admin), runs new migrations, builds the Vue app, starts the server on port 8040 in a minimized window and opens http://127.0.0.1:8040. If the server already runs, it only opens the browser. Apache, MySQL and the other projects are not touched. Close the "LazyEyeHealth server" window to stop it.
+
+The project also appears in `switch_project.bat` (XAMPP Apache on http://localhost), like the other Laravel projects in the `work` folder.
+
+**By hand:**
+
 ```bash
 composer install
 copy .env.example .env          # then edit it, see below

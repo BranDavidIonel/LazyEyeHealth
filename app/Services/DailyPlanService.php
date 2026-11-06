@@ -78,7 +78,7 @@ class DailyPlanService
                 'title' => __('The weekly vision test'),
                 'text' => $daysSince === null
                     ? __('Take the first letter chart test: it is the starting point for comparisons.')
-                    : __('The last letter chart test was :days days ago.', ['days' => $daysSince]),
+                    : trans_choice('The last letter chart test was :days days ago.', $daysSince, ['days' => $daysSince]),
                 'minutes' => '5 min',
                 'done' => false,
                 'url' => '/test-vedere/acuity',

@@ -3,6 +3,7 @@
 use App\Http\Middleware\AutoLoginLocally;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\SetLocale;
+use Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -26,6 +27,13 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
+
+        // The local auto-login must run before the "auth" check, otherwise the
+        // first request of a new session is sent to /login (and then home).
+        $middleware->prependToPriorityList(
+            before: AuthenticatesRequests::class,
+            prepend: AutoLoginLocally::class,
+        );
 
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo(fn () => route('home'));

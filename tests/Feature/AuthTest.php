@@ -36,7 +36,7 @@ class AuthTest extends TestCase
         $this->get('/login')
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
-                ->component('auth/Login', false)
+                ->component('auth/Login')
                 ->where('canRegister', false)
                 ->where('auth.user', null)
                 ->where('auth.loginRequired', true));
@@ -260,7 +260,7 @@ class AuthTest extends TestCase
 
         $this->get('/register')
             ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page->component('auth/Register', false));
+            ->assertInertia(fn (Assert $page) => $page->component('auth/Register'));
         $this->get('/login')->assertInertia(fn (Assert $page) => $page->where('canRegister', true));
 
         $this->post('/register', [
