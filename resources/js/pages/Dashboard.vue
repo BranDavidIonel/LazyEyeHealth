@@ -176,7 +176,7 @@ import { t } from '@/i18n';
 import type { ExerciseMeta, VisionComparison } from '@/types';
 import { baseOptions, series } from '@/utils/charts';
 import type { ExerciseSummary } from '@/utils/exerciseStats';
-import { formatDate, formatNumber, logmarToDecimal, signed, weekdayShort } from '@/utils/format';
+import { formatDate, formatNumber, formatVisionPercent, signed, weekdayShort } from '@/utils/format';
 
 type PlanStep = { kind: string; slug: string | null; title: string; text: string; minutes: string; done: boolean; url: string };
 type Journal = { date: string; patch_minutes: number; eye_comfort: number | null; note: string | null };
@@ -300,9 +300,9 @@ export default defineComponent({
                 return t(':value logCS', { value: formatNumber(row.latest.score, 2) });
             }
 
-            return t(':logmar logMAR (decimal :decimal)', {
+            return t(':percent of normal vision · :logmar logMAR', {
+                percent: formatVisionPercent(row.latest.score),
                 logmar: formatNumber(row.latest.score, 2),
-                decimal: formatNumber(logmarToDecimal(row.latest.score), 2),
             });
         },
 
@@ -314,11 +314,13 @@ export default defineComponent({
                 return t(':change logCS compared with :days days ago', { change: signed(month.gain, 2), days });
             }
 
-            return t(':lines lines (:letters letters) compared with :days days ago', {
+            const text = t(':lines lines (:letters letters) compared with :days days ago', {
                 lines: signed(month.lines),
                 letters: signed(month.letters, 0),
                 days,
             });
+
+            return row.baseline ? `${text} · ${formatVisionPercent(row.baseline.score)} → ${formatVisionPercent(row.latest.score)}` : text;
         },
 
         saveJournal(): void {

@@ -156,6 +156,14 @@ export default {
     'print size (logMAR), big → small': 'mărimea textului (logMAR), mare → mic',
     'words per minute': 'cuvinte pe minut',
 
+    // vision percent
+    'of normal vision (100%)': 'din vederea normală (100%)',
+    'Vision (%)': 'Vedere (%)',
+    'The percent is the decimal acuity × 100, the way eye doctors usually say it: 100% is normal vision, 50% means you need letters twice as big to read them, more than 100% is better than normal.':
+        'Procentul este acuitatea zecimală × 100, cum o spun de obicei medicii: 100% e vederea normală, 50% înseamnă că ai nevoie de litere de două ori mai mari ca să le citești, peste 100% e mai bine decât normal.',
+    'The screen is not calibrated, so the percent is only approximate.':
+        'Ecranul nu e calibrat, așa că procentul e doar aproximativ.',
+
     // themes
     'Colour theme': 'Tema de culori',
     Light: 'Luminoasă',

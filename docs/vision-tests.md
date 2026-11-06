@@ -15,7 +15,7 @@ Page: `resources/js/pages/vision/Acuity.vue`
 - **Score (ETDRS letter-by-letter):**
   `logMAR = top line + 0.1 − 0.02 × letters read`
   Each letter is worth 0.02 logMAR, each line (5 letters) 0.1. Lines above the first one count as read.
-- Also shown: decimal acuity (`10^−logMAR`) and Snellen 6/x.
+- Also shown: **percent of normal vision** = decimal acuity × 100 (the way eye doctors usually say it: 0.0 logMAR = 100 %, 0.3 = 50 %, 1.0 = 10 %; `logmarToPercent()` in `resources/js/utils/format.ts`), decimal acuity (`10^−logMAR`) and Snellen 6/x. The percent is about sharpness only (how big letters must be), not about how much of the world you see (field of vision), and it is only as exact as the screen calibration and the measured distance.
 - Flags: `floor` (could not read the biggest line that fits → move closer) and `ceiling` (read the smallest line the screen can show → sit further away).
 
 Recommended: 150–300 cm, every week, twice in a row per eye.

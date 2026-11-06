@@ -56,23 +56,25 @@
             <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
                 <div class="rounded-lg bg-panel-2 p-3">
                     <p class="text-xs text-muted">{{ row.baseline ? formatDate(row.baseline.date) : $t('one month ago') }}</p>
-                    <p class="text-lg font-semibold tabular-nums">{{ row.baseline ? score(row, row.baseline.score) : '—' }}</p>
+                    <p class="text-lg font-semibold tabular-nums">{{ row.baseline ? main(row, row.baseline.score) : '—' }}</p>
+                    <p v-if="row.baseline && row.type !== 'contrast'" class="text-xs text-muted tabular-nums">{{ formatNumber(row.baseline.score, 2) }} logMAR</p>
                     <p v-if="row.baseline && row.type === 'reading' && row.baseline.extra.max_wpm" class="text-xs text-muted">{{ $t(':wpm words/min', { wpm: formatNumber(row.baseline.extra.max_wpm) }) }}</p>
                 </div>
                 <div class="rounded-lg bg-panel-2 p-3">
                     <p class="text-xs text-muted">{{ formatDate(row.latest.date) }}</p>
-                    <p class="text-lg font-semibold tabular-nums">{{ score(row, row.latest.score) }}</p>
+                    <p class="text-lg font-semibold tabular-nums">{{ main(row, row.latest.score) }}</p>
+                    <p v-if="row.type !== 'contrast'" class="text-xs text-muted tabular-nums">{{ formatNumber(row.latest.score, 2) }} logMAR</p>
                     <p v-if="row.type === 'reading' && row.latest.extra.max_wpm" class="text-xs text-muted">{{ $t(':wpm words/min', { wpm: formatNumber(row.latest.extra.max_wpm) }) }}</p>
                 </div>
             </div>
 
             <p v-if="row.month" class="mt-3 text-sm">
-                <b>{{ deltaText(row, row.month) }}</b>
+                <b>{{ deltaText(row, row.month, row.baseline?.score) }}</b>
                 <span v-if="row.approximate" class="text-xs text-muted"> · {{ $t('not exactly a month apart') }}</span>
             </p>
             <p v-else class="mt-3 text-sm text-muted">{{ $t('The comparison appears when you have a test at least a week older (ideally a month).') }}</p>
             <p v-if="row.since_start" class="mt-1 text-xs text-muted">
-                {{ $t('Since the first test (:date):', { date: formatDate(row.first.date) }) }} {{ deltaText(row, row.since_start) }}
+                {{ $t('Since the first test (:date):', { date: formatDate(row.first.date) }) }} {{ deltaText(row, row.since_start, row.first.score) }}
             </p>
         </div>
     </div>
@@ -97,6 +99,7 @@
                         <th>{{ $t('Test') }}</th>
                         <th>{{ $t('Eye') }}</th>
                         <th class="text-right">{{ $t('Distance') }}</th>
+                        <th class="text-right">{{ $t('Vision (%)') }}</th>
                         <th class="text-right">{{ $t('Result') }}</th>
                         <th>{{ $t('Note') }}</th>
                         <th class="w-10"><span class="sr-only">{{ $t('Delete') }}</span></th>
@@ -108,6 +111,7 @@
                         <td>{{ typeLabel(test.type) }}</td>
                         <td>{{ eyeLabel(test.eye) }}</td>
                         <td class="text-right tabular-nums">{{ test.distance_cm }} cm</td>
+                        <td class="text-right font-semibold whitespace-nowrap tabular-nums" :title="$t('of normal vision (100%)')">{{ test.type === 'contrast' ? '—' : formatVisionPercent(test.score) }}</td>
                         <td class="text-right whitespace-nowrap tabular-nums">
                             {{ test.type === 'contrast' ? `${formatNumber(test.score, 2)} logCS` : `${formatNumber(test.score, 2)} logMAR` }}
                             <span v-if="test.type === 'reading' && test.data.max_wpm" class="block text-xs text-muted">{{ $t(':wpm words/min', { wpm: formatNumber(test.data.max_wpm) }) }}</span>
@@ -139,7 +143,7 @@ import VerdictBadge from '@/components/vision/VerdictBadge.vue';
 import { t } from '@/i18n';
 import type { EyeKey, VisionComparison, VisionDay, VisionDelta, VisionTestRow, VisionTypeKey } from '@/types';
 import { baseOptions, eyeColor } from '@/utils/charts';
-import { formatDate, formatNumber, formatShortDate, signed } from '@/utils/format';
+import { formatDate, formatNumber, formatShortDate, formatVisionPercent, signed } from '@/utils/format';
 
 type Option = { value: string; label: string };
 type ChartSpec = { type: VisionTypeKey; title: string; description: string; data: ChartData<'line'>; options: ChartOptions<'line'> };
@@ -215,7 +219,9 @@ export default defineComponent({
                             };
                         });
 
-                    const options = baseOptions<'line'>((v) => `${formatNumber(v, 2)} ${s.unit}`);
+                    const options = baseOptions<'line'>((v) =>
+                        s.unit === 'logMAR' ? `${formatNumber(v, 2)} logMAR (${formatVisionPercent(v)})` : `${formatNumber(v, 2)} ${s.unit}`,
+                    );
                     options.scales!.y = { ...options.scales!.y, beginAtZero: false, reverse: s.lowerIsBetter };
 
                     return {
@@ -232,6 +238,7 @@ export default defineComponent({
     methods: {
         formatDate,
         formatNumber,
+        formatVisionPercent,
 
         typeLabel(type: string): string {
             return this.types.find((o) => o.value === type)?.label ?? type;
@@ -241,16 +248,21 @@ export default defineComponent({
             return this.eyes.find((o) => o.value === eye)?.label ?? eye;
         },
 
-        score(row: VisionComparison, value: number): string {
-            return row.type === 'contrast' ? `${formatNumber(value, 2)} logCS` : `${formatNumber(value, 2)} logMAR`;
+        /** Main number of a test day: percent of normal vision (letter chart, reading) or logCS (contrast). */
+        main(row: VisionComparison, value: number): string {
+            return row.type === 'contrast' ? `${formatNumber(value, 2)} logCS` : formatVisionPercent(value);
         },
 
-        deltaText(row: VisionComparison, delta: VisionDelta): string {
+        deltaText(row: VisionComparison, delta: VisionDelta, from?: number): string {
             if (row.type === 'contrast') {
                 return t(':change logCS', { change: signed(delta.gain, 2) });
             }
 
-            const text = t(':lines lines (:letters letters)', { lines: signed(delta.lines), letters: signed(delta.letters, 0) });
+            let text = t(':lines lines (:letters letters)', { lines: signed(delta.lines), letters: signed(delta.letters, 0) });
+
+            if (from !== undefined) {
+                text += ` · ${formatVisionPercent(from)} → ${formatVisionPercent(row.latest.score)}`;
+            }
 
             return delta.speed_change_pct !== undefined
                 ? `${text} · ${t('speed :pct%', { pct: `${delta.speed_change_pct > 0 ? '+' : ''}${formatNumber(delta.speed_change_pct)}` })}`

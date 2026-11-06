@@ -45,7 +45,11 @@
             <template #score>
                 <div class="mt-2 flex flex-wrap items-end gap-x-8 gap-y-3">
                     <div>
-                        <p class="text-4xl font-semibold tabular-nums">{{ formatNumber(saved.test.score, 2) }} <span class="text-lg text-muted">logMAR</span></p>
+                        <p class="text-5xl font-semibold text-accent tabular-nums">{{ formatVisionPercent(saved.test.score) }}</p>
+                        <p class="text-sm text-muted">{{ $t('of normal vision (100%)') }}</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-semibold tabular-nums">{{ formatNumber(saved.test.score, 2) }} <span class="text-base text-muted">logMAR</span></p>
                         <p class="text-sm text-muted">{{ $t('lower is better · 0.0 = normal vision') }}</p>
                     </div>
                     <div class="grid grid-cols-3 gap-3 text-sm">
@@ -54,6 +58,10 @@
                         <div><span class="block text-muted">{{ $t('Letters read') }}</span><b class="text-lg tabular-nums">{{ saved.test.data.letters_correct }}</b></div>
                     </div>
                 </div>
+                <p class="mt-3 text-xs text-muted">
+                    {{ $t('The percent is the decimal acuity × 100, the way eye doctors usually say it: 100% is normal vision, 50% means you need letters twice as big to read them, more than 100% is better than normal.') }}
+                    <template v-if="!saved.test.data.size_calibrated">{{ $t('The screen is not calibrated, so the percent is only approximate.') }}</template>
+                </p>
                 <p v-if="saved.test.data.floor" class="mt-3 rounded-lg border border-warn/40 bg-warn/10 p-3 text-sm text-warn">
                     {{ $t('You could not read the biggest line that fits on the screen at this distance. Move closer (for example 100 or 50 cm) and repeat: the result is then measured exactly.') }}
                 </p>
@@ -88,7 +96,7 @@ import TestResult from '@/components/vision/TestResult.vue';
 import TestSetup from '@/components/vision/TestSetup.vue';
 import TestShell from '@/components/vision/TestShell.vue';
 import type { EyeKey, VisionDay } from '@/types';
-import { formatNumber, logmarToDecimal, logmarToSnellen } from '@/utils/format';
+import { formatNumber, formatVisionPercent, logmarToDecimal, logmarToSnellen } from '@/utils/format';
 import { lastDistance, rememberDistance, saveVisionTest } from '@/vision/api';
 import type { SavedTest } from '@/vision/api';
 import { drawSloan, letterHeightPx, randomLetters, round1, round2 } from '@/vision/sloan';
@@ -150,6 +158,7 @@ export default defineComponent({
 
     methods: {
         formatNumber,
+        formatVisionPercent,
         logmarToDecimal,
         logmarToSnellen,
 

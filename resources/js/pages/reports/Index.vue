@@ -124,7 +124,7 @@
                         <td class="whitespace-nowrap">{{ formatDate(test.date) }}</td>
                         <td>{{ $t(typeLabels[test.type]) }}</td>
                         <td>{{ $t(eyeLabels[test.eye]) }}</td>
-                        <td class="text-right tabular-nums">{{ test.type === 'contrast' ? `${formatNumber(test.score, 2)} logCS` : `${formatNumber(test.score, 2)} logMAR` }}</td>
+                        <td class="text-right tabular-nums">{{ test.type === 'contrast' ? `${formatNumber(test.score, 2)} logCS` : `${formatVisionPercent(test.score)} · ${formatNumber(test.score, 2)} logMAR` }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -160,7 +160,7 @@ import StatCard from '@/components/general/StatCard.vue';
 import { t } from '@/i18n';
 import type { VisionTestRow } from '@/types';
 import { baseOptions, GROUP_LABELS, GROUP_ORDER, groupColor, heatColors } from '@/utils/charts';
-import { formatDate, formatDuration, formatNumber, formatShortDate } from '@/utils/format';
+import { formatDate, formatDuration, formatNumber, formatShortDate, formatVisionPercent } from '@/utils/format';
 import { cssColor } from '@/utils/theme';
 import { METRICS } from '@/utils/metrics';
 import type { Metric } from '@/utils/metrics';
@@ -343,6 +343,7 @@ export default defineComponent({
         formatDate,
         formatDuration,
         formatNumber,
+        formatVisionPercent,
 
         go(query: Record<string, string>): void {
             router.get('/rapoarte', query, { preserveScroll: true });

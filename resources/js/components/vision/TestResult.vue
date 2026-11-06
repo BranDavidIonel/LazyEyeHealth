@@ -13,7 +13,7 @@
                     <div v-if="comparison.month" class="rounded-lg border border-line bg-panel-2/60 p-3">
                         <p class="text-xs text-muted">{{ $t('vs. :days days ago (:date)', { days: comparison.baseline?.gap ?? 0, date: formatDate(comparison.baseline?.date) }) }}</p>
                         <p class="mt-1 flex flex-wrap items-center gap-2">
-                            <b class="text-lg tabular-nums">{{ deltaText(comparison.month) }}</b>
+                            <b class="text-lg tabular-nums">{{ deltaText(comparison.month, comparison.baseline?.score) }}</b>
                             <VerdictBadge :verdict="comparison.month.verdict" />
                         </p>
                         <p v-if="comparison.approximate" class="mt-1 text-xs text-muted">{{ $t('No test from exactly a month ago: compared with the closest older one.') }}</p>
@@ -21,7 +21,7 @@
                     <div v-if="comparison.since_start" class="rounded-lg border border-line bg-panel-2/60 p-3">
                         <p class="text-xs text-muted">{{ $t('vs. your first test (:date)', { date: formatDate(comparison.first.date) }) }}</p>
                         <p class="mt-1 flex flex-wrap items-center gap-2">
-                            <b class="text-lg tabular-nums">{{ deltaText(comparison.since_start) }}</b>
+                            <b class="text-lg tabular-nums">{{ deltaText(comparison.since_start, comparison.first.score) }}</b>
                             <VerdictBadge :verdict="comparison.since_start.verdict" />
                         </p>
                     </div>
@@ -63,7 +63,7 @@ import { defineComponent } from 'vue';
 import VerdictBadge from '@/components/vision/VerdictBadge.vue';
 import { t } from '@/i18n';
 import type { EyeKey, VisionComparison, VisionDelta, VisionTestRow } from '@/types';
-import { formatDate, formatNumber, signed } from '@/utils/format';
+import { formatDate, formatNumber, formatVisionPercent, signed } from '@/utils/format';
 
 const EYE_LABELS: Record<EyeKey, string> = { right: 'Right eye', left: 'Left eye', both: 'Both eyes' };
 
@@ -109,12 +109,16 @@ export default defineComponent({
     methods: {
         formatDate,
 
-        deltaText(delta: VisionDelta): string {
+        deltaText(delta: VisionDelta, from?: number): string {
             if (this.test.type === 'contrast') {
                 return t(':change logCS', { change: signed(delta.gain, 2) });
             }
 
-            const text = t(':lines lines (:letters letters)', { lines: signed(delta.lines), letters: signed(delta.letters, 0) });
+            let text = t(':lines lines (:letters letters)', { lines: signed(delta.lines), letters: signed(delta.letters, 0) });
+
+            if (from !== undefined && this.comparison) {
+                text += ` · ${formatVisionPercent(from)} → ${formatVisionPercent(this.comparison.latest.score)}`;
+            }
 
             return delta.speed_change_pct !== undefined
                 ? `${text} · ${t('speed :pct%', { pct: `${delta.speed_change_pct > 0 ? '+' : ''}${formatNumber(delta.speed_change_pct)}` })}`

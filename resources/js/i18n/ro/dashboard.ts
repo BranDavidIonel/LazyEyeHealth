@@ -56,6 +56,7 @@ export default {
     ':logmar logMAR (decimal :decimal)': ':logmar logMAR (zecimal :decimal)',
     ':change logCS compared with :days days ago': ':change logCS față de acum :days zile',
     ':lines lines (:letters letters) compared with :days days ago': ':lines rânduri (:letters litere) față de acum :days zile',
+    ':percent of normal vision · :logmar logMAR': ':percent din vederea normală · :logmar logMAR',
     'goal :min min': 'obiectiv :min min',
 
     // exercise list

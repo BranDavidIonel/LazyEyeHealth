@@ -75,6 +75,19 @@ export function logmarToSnellen(logmar: number): string {
     return `6/${Math.round(6 * Math.pow(10, logmar))}`;
 }
 
+/**
+ * logMAR → percent of normal vision, the way eye doctors usually say it:
+ * decimal acuity × 100 (0.0 logMAR = 100%, 0.3 = 50%, 1.0 = 10%; over 100% = better than normal).
+ */
+export function logmarToPercent(logmar: number): number {
+    return Math.round(Math.pow(10, -logmar) * 100);
+}
+
+/** "26%" */
+export function formatVisionPercent(logmar: number): string {
+    return `${formatNumber(logmarToPercent(logmar))}%`;
+}
+
 /** "0,30 logMAR" */
 export function formatLogmar(logmar: number): string {
     return `${formatNumber(logmar, 2)} logMAR`;

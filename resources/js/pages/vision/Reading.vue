@@ -85,7 +85,7 @@
                     <div>
                         <span class="text-sm text-muted">{{ $t('Reading acuity') }}</span>
                         <p class="text-3xl font-semibold tabular-nums">{{ formatNumber(saved.test.score, 2) }} <span class="text-base text-muted">logMAR</span></p>
-                        <p class="text-xs text-muted">{{ $t('the smallest print you can read (lower is better)') }}</p>
+                        <p class="text-xs text-muted">{{ $t('the smallest print you can read (lower is better)') }} · <b class="text-accent">{{ formatVisionPercent(saved.test.score) }}</b> {{ $t('of normal vision (100%)') }}</p>
                     </div>
                     <div>
                         <span class="text-sm text-muted">{{ $t('Best reading speed') }}</span>
@@ -122,7 +122,7 @@ import TestShell from '@/components/vision/TestShell.vue';
 import { getLocale, t } from '@/i18n';
 import type { EyeKey, VisionDay } from '@/types';
 import { baseOptions, series } from '@/utils/charts';
-import { formatNumber } from '@/utils/format';
+import { formatNumber, formatVisionPercent } from '@/utils/format';
 import { lastDistance, rememberDistance, saveVisionTest } from '@/vision/api';
 import type { SavedTest } from '@/vision/api';
 import { SENTENCES, shuffled, wordCount } from '@/vision/sentences';
@@ -251,6 +251,7 @@ export default defineComponent({
 
     methods: {
         formatNumber,
+        formatVisionPercent,
 
         /** CSS font size for a print size: x-height = 5 arcmin × 10^logMAR at the distance. */
         fontPx(logmar: number): number {
